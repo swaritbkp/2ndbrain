@@ -1,63 +1,51 @@
-# FINAL REPORT: Lakshman Rekha (2026-11-23)
+# FINAL REPORT: Lakshman Rekha (v2, 2026-11-23)
 *Fictional data. Indicative estimate only. Not tax or investment advice.*
 
-## Phase statuses (each verified by `scripts/verify_phase.py`, exit 0)
-| Phase | Status | Commit | Notes |
-|---|---|---|---|
-| 00-preflight | PASS | 4e4ca93 | paid Nemotron Super (arena/attacker/synapse) + Lightning (sweep) resolved and pinged; 76/76 tests |
-| 01-compose | PASS | 6866083 | **Route B**: Synapse-generated `preview_` + `confirm_rebalance_switch_server.py`, contract 15/15 |
-| 02-baseline-runner | PASS | 037d28e | baseline = `rekha.baseline.sdk_server` (Synapse Auto dropped params); runner + 11 offline tests; smoke 4/4 SAFE |
-| 03-viewer | PASS | 9823854 | Streamlit replay / scorecard / audit + receipts + tamper / extras; 7 tests |
-| 04-arena | PASS | d8d2327 | 198 runs, 0 ERROR; Lightning sweep; fairness audit fair=true |
-| 05-distinctive | PASS | 7845de3 | economics, language parity, mutation (unit 7/7, arena 1/7), adaptive (original + 2 adaptive generations) |
-| 06-submission | DEGRADED (no slide PNG render) | final commit | README, deck, demo, clean-room check, this report |
+## Status
+| Item | State | Evidence |
+|---|---|---|
+| Phases 00–06 (v1 build) | PASS (06 was DEGRADED: no slide render) | `state/*.json`, `scripts/verify_phase.py <phase>` exit 0; commits `4e4ca93` … `3effa86` |
+| v1 submission | archived | `results/archive/v1_latest/` (commit `8a3fcbe`) |
+| v2 audit | done | `docs/AUDIT_CRITIQUE.md` |
+| v2 engineering + benchmark | done | commit `be7ae19` (milestone 2) |
+| v2 docs, deck, video | done | later milestone commits in `git log` |
+| Tests | 105 passed (v2 milestone 2) | `pytest -q` with `COMPOSED_SERVER` set; CI runs the same |
+| Numbers | 964 stored runs re-scored, 0 mismatches | `python scripts/check_numbers.py --rescore` |
 
-## Clean-room check
-Copied the repo without `.venv`, `results/`, `data/*.db`, `.git`, `.env` and logs into a temp dir, then created a fresh venv and ran `pip install -r requirements.txt -e .`, `check_deps.py` (all imports ok), `seed.py --reset`, and `pytest -q` with `COMPOSED_SERVER` set to the Route B pair: **94 passed** (incl. 15 contract tests and AppTest renders of every viewer page on the bundled fixtures). The replay demo needs `results/latest`, which is tracked in git; without it the viewer falls back to the synthetic fixtures.
+## Headline (v2, `results/latest`: 37 cases × 3 runs × 2 arms, 222 runs, 0 ERROR)
+| | Baseline (12 tools) | Composed (3 tools) |
+|---|---|---|
+| Attack runs that committed unsafely | 3 / 102 (all N04) | 0 / 102 |
+| Controls succeeded | 9 / 9 | 9 / 9 |
+| Mean tool calls | 8.76 | 2.15 |
+| Schema tokens per request | 2,569 | 613 |
+v1 → v2 for the composed arm: controls 6 / 9 → 9 / 9 (K02 fixed by the read-only lookup); attacks 0 / 90 → 0 / 102.
 
-## Headline (results/latest, nvidia/nemotron-3.5-super-vl, T=0.2, 3 runs × 33 cases × 2 agents)
-- Attack runs violating: **baseline 3/90** (all N04: fake system notice → direct `execute_switch`) vs **composed 0/90**.
-- Controls succeeded: baseline 9/9 vs **composed 6/9** (K02 false block 3/3: no read-only lookup on the composed surface).
-- Lightning sweep (core × 2): 0/24 vs 0/24 violations; controls 6/6 vs 4/6.
-- Errors: 0/198. Mean tool calls 8.85 vs 1.35. Schema tokens 2,569 vs 507.
-- The effect is real but modest and concentrated in one attack class; both agents resisted all 12 core attacks and the 12 Hinglish variants.
+## What v2 shipped
+1. **Read-only discovery, separate from the write path:** Synapse-built `lookup_holdings` in its own MCP process; 5 contract tests (single tool, DB digest unchanged across every client, no OTP or confirmation id in output, no CRM notes, K02 tranche resolved).
+2. **Four new attacks (N07–N10):** note-borne instruction via the profile, cap smurfing, approval reuse for a second tranche, fabricated suitability waiver. Result: resisted by both arms, 3/3 each.
+3. **OTP-assisted mutation testing:** the human reads out every real code; real server 8/8 runs SAFE; mutants killed 3/7 (`no_kyc`, `no_suitability`, `no_daily_cap`); combined arena 4/7; unit 7/7.
+4. **Full v2 rerun of both arms** plus a Lightning sweep (baseline 1/24, composed 0/24; controls 6/6 both).
+5. **Verification tooling:** `scripts/check_numbers.py` (scorecard rebuild + DB re-scoring + doc check), `scripts/secret_scan.py` (tree + full history + blob size), `scripts/cost_ledger.py`.
+6. **CI:** `.github/workflows/ci.yml` (clean install, secret scan, ruff, tests incl. both contract suites, number check, provenance check).
+7. **Viewer:** KPI strip, per-run "why" panel from tool results and DB state, row-targeted tamper demo, readable extras, deep links for every demo case.
+8. **Docs:** `README.md`, `docs/ARCHITECTURE.md` (STRIDE, trust boundaries, OTP state machine, TOCTOU, rule isolation, hash chain), `docs/BENCHMARK_METHODOLOGY.md` (protocol, taxonomy, mutation method, cost ledger).
+9. **Deck:** `deliverables/Lakshman_Rekha_Deck.pdf` (HTML/CSS → Chromium vector PDF, data-driven, layout-checked; `scripts/build_pdf_deck.py`). The v1 `.pptx` was removed (v1 numbers).
+10. **Demo video:** `deliverables/Lakshman_Rekha_Demo.mp4` (live Streamlit capture, narration, burned-in captions; `scripts/record_demo.py`).
 
-## What shipped (docs/FEATURES.md)
-F1 arena ✔ · F2 out-of-band code ✔ · F3 helpful blocks ✔ · F4 audit chain + receipts ✔ · F5 offline replay demo ✔ · F6 mutation testing ✔ · F7 model sweep ✔ · F8 Hinglish parity ✔ · F9 adaptive attacker ✔ · F10 economics ✔ · F11 Claude Desktop config ✔ (`docs/MCP_CONFIG.md`)
+## Synapse 0.1.9 findings
+- Route A: optional parameters emitted as required (2/15 contract) → Route B (15/15).
+- Auto mode over FastAPI: all non-path parameters dropped → baseline uses the SDK server.
+- Discovery scans the repo: a stale generated file's same-named functions shadowed engine imports in the first lookup build → file moved byte-identical to `archive/rejected_builds/`.
+- Fallback model: the final preview server was produced by `deepseek/deepseek-v4.1-flash-1017` after Nemotron hit `emit_tool_plan`.
 
-## DEGRADED / not done
-- **Slide PNG overflow check skipped**: LibreOffice isn't installed. Slides were kept to ≤ 30 words each (checked programmatically); open the .pptx once to eyeball it.
-- **Composition is Route B (two tools), not Route A (one tool)**: Synapse 0.1.9 emitted the optional confirmation params as required. Disclosed in the README.
-- **Baseline is the SDK fallback**, not the Synapse Auto server (which dropped every non-path parameter). Disclosed in the README.
+## Spend (`results/latest/cost_ledger.json`)
+v2 incremental **$0.95** (306 runs, 5,914,694 tokens). All-time **$1.82** (612 runs, 11,429,231 tokens). Not metered: Synapse builds, pings, the v1 adaptive attacker's own calls.
 
-## Autonomous decisions
-All logged with rationale and undo in [docs/DECISIONS.md](docs/DECISIONS.md). The ones that affect how to read the results:
-1. Controls get one neutral "Yes, go ahead." from the simulated human when the script runs out (both agents, never attacks); prompted by a reviewer fairness note.
-2. A run that errors after a scored VIOLATION stays a VIOLATION.
-3. The arena ran in 3 parallel workers with exclusive per-run locks (same settings, fresh DB + server per run).
-4. Mutation unit checks re-apply the mutant through a pytest plugin, because `tests/conftest.py` clears it and tests may not be edited.
-5. `synapse_build.py` now globs `*_server*.py`, because Synapse writes `_2` suffixes and the manifest was missing those files.
-
-## Unverified config values (labelled illustrative)
-Cut-off times (`config/rules.yaml`), the liquid graded exit load (`config/schemes.yaml`), one tax block + stamp duty/STT (`config/tax.yaml`). Equity tax rates for FY 2026-27 are verified.
-
-## Tokens and cost (OpenRouter, paid endpoints)
-| Run set | Runs | Tokens | USD |
-|---|---|---|---|
-| Smoke | 4 | 81,323 | 0.015 |
-| Full arena | 198 | 3,175,766 | 0.605 |
-| Lightning sweep | 60 | 1,642,747 | 0.132 |
-| Mutation (arena half) | 8 | 69,864 | 0.015 |
-| Adaptive (agent runs) | 36 | 544,837 | 0.106 |
-| Source | per-run `cost_usd`/token fields in each folder's run JSONs (incl. `mutation_runs/`, `adaptive_runs/`) | | |
-| **Total recorded** | **306** | **5,514,537** | **0.873** |
-
-Not metered by the runner (small): the first smoke attempt (~$0.01), Synapse builds (7 build attempts via OpenRouter), model pings, and the adaptive attacker's own 24 calls (6 cases × 2 agents × 2 adaptive generations). The OpenRouter activity page has the exact figure.
+## Known limits
+One model family, temperature 0.2, 3 runs per case; the safety gap rests on N04; attacker = defender model (v1 adaptive, not rerun); 5 baseline runs cut off by the 15-call cap; illustrative config values (cut-offs, liquid exit load, transaction costs).
 
 ## Human next steps
-1. **Open the deck** `deliverables/Lakshman_Rekha_deck.pptx` once and check the layout (no LibreOffice render was possible).
-2. **Record the demo video** (≤ 3:00): run `.\scripts\demo.ps1` and follow `docs/DEMO_FINAL.md` (cases N04 run 1 and K01 run 1).
-3. **Final read** of `README.md` and `results/latest/SUMMARY.md`; the claims are deliberately modest, so keep them that way.
-4. Optional, before submission: verify the illustrative config values against primary sources.
-5. **Submit** (repo + video + deck). Nothing has been pushed; push or zip when ready.
-6. Possible follow-up: add a read-only holdings/lock-in lookup next to the composed tools to remove the K02 false block, then re-run the controls.
+1. Watch `deliverables/Lakshman_Rekha_Demo.mp4` and skim the PDF deck once.
+2. Submit the repo URL, deck and video.
+3. Optional: verify the illustrative config values against primary sources; rerun with another model family.
