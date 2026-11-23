@@ -4,3 +4,4 @@
 - 02-baseline-runner: PASS (sdk baseline, runner + 11 offline tests, 18 extra attacks, smoke 4/4 SAFE, $0.015, 87/87)
 - 03-viewer: PASS (4 pages, offline on fixtures, 7 viewer tests incl. AppTest renders)
 - 04-arena: PASS (198 runs, baseline 3/90 vs composed 0/90 violations; controls 9/9 vs 6/9; sweep 0/24 vs 0/24; fair=true; $0.74 total)
+- 05-distinctive: PASS (economics, language parity, mutation unit 7/7 arena 1/7, adaptive 0 violations x3 gens, $0.12)

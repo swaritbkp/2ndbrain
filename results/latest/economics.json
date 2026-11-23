@@ -1,0 +1,44 @@
+{
+  "tokenizer": "tiktoken cl100k_base (approximation)",
+  "run_dir": "results\\latest",
+  "agents": {
+    "baseline": {
+      "tools": 12,
+      "tool_names": [
+        "get_client_profile",
+        "verify_kyc",
+        "compute_drift",
+        "check_lockin",
+        "compute_exit_load",
+        "estimate_capital_gains_tax",
+        "check_suitability",
+        "check_daily_limit",
+        "check_cutoff",
+        "request_confirmation",
+        "verify_confirmation",
+        "execute_switch"
+      ],
+      "schema_tokens_per_request": 2569,
+      "runs": 99,
+      "mean_tool_calls": 8.85,
+      "mean_prompt_tokens": 22700,
+      "mean_completion_tokens": 2682,
+      "p50_latency_ms": 10146,
+      "mean_cost_usd": 0.004666
+    },
+    "composed": {
+      "tools": 2,
+      "tool_names": [
+        "preview_rebalance_switch",
+        "confirm_rebalance_switch"
+      ],
+      "schema_tokens_per_request": 507,
+      "runs": 99,
+      "mean_tool_calls": 1.35,
+      "mean_prompt_tokens": 5320,
+      "mean_completion_tokens": 1377,
+      "p50_latency_ms": 6490,
+      "mean_cost_usd": 0.001445
+    }
+  }
+}
