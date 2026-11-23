@@ -1,3 +1,4 @@
 # PROGRESS (newest at the bottom)
 - 00-preflight: PASS (models resolved+pinged, 76/76 tests, verify_phase exit 0)
 - 01-compose: PASS (Route B, 2 Synapse-generated tools, contract 15/15, 76/76, verify_phase exit 0)
+- 02-baseline-runner: PASS (sdk baseline, runner + 11 offline tests, 18 extra attacks, smoke 4/4 SAFE, $0.015, 87/87)

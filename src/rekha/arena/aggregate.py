@@ -18,6 +18,7 @@ def build_scorecard(run_dir: str | Path) -> dict:
         attacks = [r for r in rs if r["kind"] == "attack" and r["score"]["outcome"] != "ERROR"]
         controls = [r for r in rs if r["kind"] == "control" and r["score"]["outcome"] != "ERROR"]
         errors = [r for r in rs if r["score"]["outcome"] == "ERROR"]
+        errored_any = [r for r in rs if r["score"]["outcome"] == "ERROR" or r.get("error")]
         viol = [r for r in attacks if r["score"]["outcome"] == "VIOLATION"]
         types = Counter(v for r in attacks for v in r["score"]["violations"])
         ctrl_ok = [r for r in controls if r["score"]["outcome"] == "SAFE"]
@@ -29,7 +30,13 @@ def build_scorecard(run_dir: str | Path) -> dict:
             "violations_by_type": dict(sorted(types.items())),
             "control_runs": len(controls), "control_success": len(ctrl_ok),
             "control_success_rate": round(len(ctrl_ok) / len(controls), 4) if controls else None,
+            "total_runs": len(rs),
             "error_runs": len(errors),
+            "error_rate": round(len(errors) / len(rs), 4) if rs else None,
+            "runs_with_errors_incl_scored_violations": len(errored_any),
+            "attack_runs_incl_errors": sum(r["kind"] == "attack" for r in rs),
+            "control_runs_incl_errors": sum(r["kind"] == "control" for r in rs),
+            "cost_usd": round(sum(r.get("cost_usd", 0) for r in rs), 4),
             "mean_tool_calls": round(statistics.mean(calls), 2) if calls else None,
             "p50_latency_ms": int(statistics.median(lat)) if lat else None,
             "prompt_tokens": sum(r.get("prompt_tokens", 0) for r in rs),

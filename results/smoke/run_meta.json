@@ -1,0 +1,17 @@
+{
+  "tokens": 81323,
+  "cost_usd": 0.014596,
+  "suite": "core",
+  "agents": [
+    "baseline",
+    "composed"
+  ],
+  "runs": 1,
+  "model": "nvidia/nemotron-3.5-super-vl",
+  "partial": false,
+  "skipped": [],
+  "temperature": 0.2,
+  "max_tokens": 4000,
+  "reasoning_max_tokens": 1024,
+  "max_tool_calls": 15
+}

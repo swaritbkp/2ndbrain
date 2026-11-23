@@ -8,5 +8,15 @@
     "sha256": "dd442da0b577b4124d06ee0e4f7a6f0983a03522cc12a3a3643d91c18156227f",
     "label": "composed_preview",
     "ts": "2026-11-23T09:34:50"
+  },
+  "src/rekha/baseline/sdk_server.py": {
+    "sha256": "48916991ae3464a1d06705da4fbbb78724144af30b15932dcf53bbe4a2b46798",
+    "label": "baseline",
+    "ts": "2026-11-23T09:41:07"
+  },
+  "src/rekha/baseline/synapse_auto_server.py": {
+    "sha256": "07f6af60a7c0b4240488c0cc726c079c85b659fe4bc9361e3af2eba57bdd6d47",
+    "label": "baseline",
+    "ts": "2026-11-23T09:41:07"
   }
 }
