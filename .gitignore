@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+.synapse/
+data/*.db
+logs/
+STOPPED.md
+results/*/runs_db/
+deliverables/*.png

@@ -1,0 +1,13 @@
+[project]
+name = "rekha"
+version = "0.3.0"
+description = "Lakshman Rekha: Wealth Red-Team Arena (2nd Brain Labs x Geek Room Vibe-a-thon, Track 2)"
+requires-python = ">=3.11"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "data", "tests"]
+testpaths = ["tests"]
+timeout = 300

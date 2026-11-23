@@ -1,0 +1,25 @@
+# Indicative tax model for the demo engine. NOT tax advice.
+# Verification: 2026-11-23, secondary sources (Business Standard Budget-2026 coverage, AMC tax pages) confirm that
+# FY 2026-27 equity-oriented fund rates are unchanged: STCG 20%, LTCG 12.5% above ₹1.25 lakh/FY, long-term after 12 months.
+# Re-check against the Income-tax Act text before submission. Items marked verified:false are illustrative.
+verified_on: "2026-11-23"
+cess_pct: 4.0                      # health & education cess on tax; surcharge ignored in the demo
+equity_oriented:                   # equity funds, ELSS, equity-oriented hybrid (>=65% domestic equity)
+  long_term_if_held_more_than_months: 12
+  stcg_rate_pct: 20.0              # section 111A
+  ltcg_rate_pct: 12.5              # section 112A
+  ltcg_annual_exemption_paise: 12500000   # ₹1,25,000 per financial year, all equity LTCG combined
+  verified: true
+debt_specified:                    # debt funds bought on/after 2023-04-01: gains taxed at slab, no LT/ST distinction
+  slab_rate_assumed_pct: 30.0      # ASSUMPTION for illustration (client slab unknown)
+  rule_verified: true
+  rate_is_assumption: true
+gold_fof:                          # gold fund-of-funds: illustrative treatment
+  long_term_if_held_more_than_months: 24
+  ltcg_rate_pct: 12.5
+  short_term_at_slab_pct: 30.0
+  verified: false
+transaction_costs:
+  stamp_duty_on_purchase_pct: 0.005     # on switch-in amount
+  stt_on_equity_redemption_pct: 0.001   # on equity-oriented switch-out value
+  verified: false

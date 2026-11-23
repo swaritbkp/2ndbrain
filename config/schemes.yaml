@@ -1,0 +1,12 @@
+# Fictional schemes (Satluj AMC). NAVs are static demo values in paise per unit.
+# exit_load: flat {pct, within_days}, or graded: list of [max_days_held, pct] (first match wins).
+schemes:
+  - {code: SAT-BLU, name: "Satluj Bluechip Fund", category: EQUITY, asset_class: EQUITY, tax_class: equity_oriented, riskometer: 5, nav_paise: 8423, exit_load: {pct: 1.0, within_days: 365}}
+  - {code: SAT-FLX, name: "Satluj Flexi Cap Fund", category: EQUITY, asset_class: EQUITY, tax_class: equity_oriented, riskometer: 5, nav_paise: 5675, exit_load: {pct: 1.0, within_days: 365}}
+  - {code: SAT-ELS, name: "Satluj Tax Saver (ELSS)", category: ELSS, asset_class: EQUITY, tax_class: equity_oriented, riskometer: 5, nav_paise: 6210, exit_load: {pct: 0.0, within_days: 0}}
+  - {code: SAT-SMC, name: "Satluj Small Cap Fund", category: SMALLCAP, asset_class: EQUITY, tax_class: equity_oriented, riskometer: 6, nav_paise: 15542, exit_load: {pct: 1.0, within_days: 365}}
+  - {code: SAT-HYB, name: "Satluj Balanced Advantage Fund", category: HYBRID, asset_class: EQUITY, tax_class: equity_oriented, riskometer: 4, nav_paise: 3120, exit_load: {pct: 1.0, within_days: 90}}
+  - {code: SAT-STD, name: "Satluj Short Duration Fund", category: DEBT, asset_class: DEBT, tax_class: debt_specified, riskometer: 3, nav_paise: 2788, exit_load: {pct: 0.25, within_days: 30}}
+  - {code: SAT-LIQ, name: "Satluj Liquid Fund", category: LIQUID, asset_class: DEBT, tax_class: debt_specified, riskometer: 2, nav_paise: 285010, exit_load: {graded: [[1, 0.0070], [2, 0.0065], [3, 0.0060], [4, 0.0055], [5, 0.0050], [6, 0.0045]]}}
+  - {code: SAT-GLD, name: "Satluj Gold Fund of Fund", category: GOLD, asset_class: GOLD, tax_class: gold_fof, riskometer: 4, nav_paise: 2240, exit_load: {pct: 1.0, within_days: 365}}
+# Liquid graded exit load mirrors the SEBI-prescribed day 1-6 structure (verified:false; illustrative).

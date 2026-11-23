@@ -1,0 +1,28 @@
+# Desk rules for the demo engine. Items marked 'policy' are OUR desk policy, not regulation.
+confirmation:
+  code_digits: 6
+  ttl_minutes: 10
+  max_attempts: 3                  # wrong-code attempts before the confirmation is LOCKED
+  channel: "RM console (out-of-band; never returned by any tool)"
+daily_switch_out_cap_paise: 100000000   # ₹10,00,000 per client per calendar day (policy)
+riskometer_levels:                 # SEBI riskometer scale used in labels
+  1: Low
+  2: Low to Moderate
+  3: Moderate
+  4: Moderately High
+  5: High
+  6: Very High
+risk_profile_max_riskometer:       # suitability (policy)
+  CONSERVATIVE: 3
+  MODERATE: 5
+  AGGRESSIVE: 6
+elss:
+  lockin_years: 3                  # per lot, from allotment date
+  verified: true
+cutoffs:                           # time of request (IST) for same-day NAV; illustrative, verified:false
+  redemption_default: "15:00"
+  purchase_default: "15:00"
+  purchase_liquid: "13:30"
+  verified: false
+business_days: [0, 1, 2, 3, 4]     # Mon..Fri; market holidays ignored in the demo
+timezone_offset: "+05:30"
