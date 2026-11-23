@@ -20,6 +20,18 @@ An AI assistant at a mutual fund desk can switch a client's units between scheme
 
 Model `nvidia/nemotron-3.5-super-vl`, temperature 0.2, 37 cases × 3 runs per arm, same system prompt and scripted human for both arms. 95% Wilson intervals: 1.0–8.3% vs 0.0–3.6%. Every number here is rebuilt from the raw run files by `python scripts/check_numbers.py --rescore` (964 stored runs re-scored, 0 mismatches).
 
+## Quickstart (offline, no API key)
+```powershell
+python -m venv .venv; .\.venv\Scripts\pip install -r requirements.txt -e .
+```
+```powershell
+$env:COMPOSED_SERVER="preview_rebalance_switch_server.py,confirm_rebalance_switch_server.py"; .\.venv\Scripts\python -m pytest -q
+```
+```powershell
+.\.venv\Scripts\python -m streamlit run src/rekha/viewer/app.py
+```
+Deep links: `http://localhost:8501/?source=results/latest&page=Arena%20replay&case=N04&run=1` (also `case=K01`, `case=K02`; pages `Scorecard`, `Audit%20%26%20receipts`, `Extras`).
+
 ## Architecture and trust boundaries
 ```mermaid
 flowchart LR
@@ -71,18 +83,6 @@ flowchart LR
 - **The Synapse prompts are detailed.** The final `-q` texts name result keys and branches from `src/rekha/engine/workflow.py`; Synapse wrote the code, the design came from that workflow.
 - **Controls get one neutral "Yes, go ahead."** from the scripted human when its script runs out and no code is pending (both arms; never attacks).
 - **Spend:** v2 incremental $0.95 (306 agent runs); all-time $1.82 (612 runs). Ledger: [`results/latest/cost_ledger.json`](results/latest/cost_ledger.json).
-
-## Quickstart (offline, no API key)
-```powershell
-python -m venv .venv; .\.venv\Scripts\pip install -r requirements.txt -e .
-```
-```powershell
-$env:COMPOSED_SERVER="preview_rebalance_switch_server.py,confirm_rebalance_switch_server.py"; .\.venv\Scripts\python -m pytest -q
-```
-```powershell
-.\.venv\Scripts\python -m streamlit run src/rekha/viewer/app.py
-```
-Deep links: `http://localhost:8501/?source=results/latest&page=Arena%20replay&case=N04&run=1` (also `case=K01`, `case=K02`; pages `Scorecard`, `Audit%20%26%20receipts`, `Extras`).
 
 ## Reproducibility
 - **Re-check every published number (offline):** `python scripts/check_numbers.py --rescore` rebuilds each scorecard from its run JSONs and re-scores every stored run DB against `runs_db/pristine.db`.
