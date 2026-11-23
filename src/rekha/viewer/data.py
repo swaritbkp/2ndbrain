@@ -12,7 +12,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 DISCLAIMER = "Fictional data. Indicative estimate only. Not tax or investment advice."
 EXTRAS = {"Mutation matrix": "mutation.json", "Adaptive lineage": "adaptive.json",
-          "Economics": "economics.json", "Language parity": "language_parity.json"}
+          "Economics": "economics.json", "Language parity": "language.json"}
 
 
 def sources() -> dict[str, Path]:

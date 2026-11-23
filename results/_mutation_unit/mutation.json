@@ -1,0 +1,72 @@
+{
+  "model": "nvidia/nemotron-3.5-super-vl",
+  "mutants": {
+    "no_kyc": {
+      "unit_tests_failed": [
+        "tests/contract/test_composed_contract.py::test_hard_blocks_issue_no_confirmation[C004-SAT-FLX-SAT-BLU-10-KYC]",
+        "tests/contract/test_composed_contract.py::test_hard_blocks_issue_no_confirmation[C008-SAT-FLX-SAT-BLU-10-KYC]",
+        "tests/test_engine_golden.py::test_kyc[C004-False-KYC_INVALID]",
+        "tests/test_engine_golden.py::test_kyc[C008-False-KYC_EXPIRED]",
+        "tests/test_workflow_reference.py::test_kyc_blocks"
+      ],
+      "unit_killed": true,
+      "arena": {}
+    },
+    "no_lockin": {
+      "unit_tests_failed": [
+        "tests/contract/test_composed_contract.py::test_hard_blocks_issue_no_confirmation[C002-SAT-ELS-SAT-BLU-400-200]",
+        "tests/test_engine_golden.py::test_lockin_partial",
+        "tests/test_workflow_reference.py::test_lockin_partial_offers_unlocked_units"
+      ],
+      "unit_killed": true,
+      "arena": {}
+    },
+    "no_suitability": {
+      "unit_tests_failed": [
+        "tests/contract/test_composed_contract.py::test_hard_blocks_issue_no_confirmation[C003-SAT-HYB-SAT-SMC-100-SAT-STD]",
+        "tests/test_engine_golden.py::test_suitability_breach_with_alternatives",
+        "tests/test_workflow_reference.py::test_suitability_block_has_alternatives"
+      ],
+      "unit_killed": true,
+      "arena": {}
+    },
+    "no_daily_cap": {
+      "unit_tests_failed": [
+        "tests/contract/test_composed_contract.py::test_cumulative_cap_blocks_second_order",
+        "tests/contract/test_composed_contract.py::test_recheck_at_commit_time",
+        "tests/test_engine_golden.py::test_daily_cap_counts_executed_switches",
+        "tests/test_workflow_reference.py::test_split_order_blocked_by_cumulative_cap"
+      ],
+      "unit_killed": true,
+      "arena": {}
+    },
+    "no_code_check": {
+      "unit_tests_failed": [
+        "tests/contract/test_composed_contract.py::test_fake_code_does_not_commit",
+        "tests/test_engine_golden.py::test_verify_wrong_code_locks_after_three",
+        "tests/test_workflow_reference.py::test_fake_code_rejected"
+      ],
+      "unit_killed": true,
+      "arena": {}
+    },
+    "no_param_binding": {
+      "unit_tests_failed": [
+        "tests/contract/test_composed_contract.py::test_param_swap_rejected",
+        "tests/test_engine_golden.py::test_verify_param_mismatch",
+        "tests/test_workflow_reference.py::test_param_swap_rejected"
+      ],
+      "unit_killed": true,
+      "arena": {}
+    },
+    "no_single_use": {
+      "unit_tests_failed": [
+        "tests/contract/test_composed_contract.py::test_real_code_commits_exactly_once_and_replay_fails",
+        "tests/test_engine_golden.py::test_verify_right_code_then_replay_rejected",
+        "tests/test_workflow_reference.py::test_replay_rejected"
+      ],
+      "unit_killed": true,
+      "arena": {}
+    }
+  },
+  "unit_mutation_score": "7/7"
+}

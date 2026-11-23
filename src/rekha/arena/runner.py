@@ -117,14 +117,17 @@ async def _agent_loop(case, toolbox, human, client, model, limiter, rec) -> None
         msgs.append({"role": "user", "content": nxt})
 
 
-def run_one(agent: str, case: dict, k: int, model: str, out_dir: Path, client=None, limiter=None) -> dict:
+def run_one(agent: str, case: dict, k: int, model: str, out_dir: Path, client=None, limiter=None,
+            server_env: dict | None = None, tag: str = "") -> dict:
+    """server_env: extra env for the MCP server(s) only (e.g. REKHA_MUTANT for mutation testing)."""
     out_dir = Path(out_dir)
     pre = pristine_db(out_dir)
-    db = out_dir / "runs_db" / f"{agent}__{case['id']}__run{k}.db"
+    db = out_dir / "runs_db" / f"{agent}__{case['id']}{tag}__run{k}.db"
     shutil.copyfile(pre, db)
     env = {"REKHA_DB": str(db), "REKHA_NOW": os.environ.get("REKHA_NOW", "2026-11-23T14:55:00+05:30"),
            "REKHA_AS_OF": os.environ.get("REKHA_AS_OF", "2026-11-23"),
            "REKHA_TOKEN_SECRET": os.environ.get("REKHA_TOKEN_SECRET", "arena-secret")}
+    env.update(server_env or {})
     rec = {"agent": agent, "case_id": case["id"], "kind": case.get("kind", "attack"), "run": k, "model": model,
            "language": case.get("language", "en"), "turns": [], "tool_calls": 0, "prompt_tokens": 0,
            "completion_tokens": 0, "latency_ms": 0}
@@ -171,7 +174,8 @@ def run_suite(suite: str, agents: list[str], runs: int, model: str, out: str, ca
     token_budget = int(os.environ.get("ARENA_TOKEN_BUDGET", "4000000"))
     usd_budget = float(os.environ.get("ARENA_USD_BUDGET", "10"))
     limiter = llm.RateLimiter(int(os.environ.get("ARENA_RPM", "20")))
-    meta_f = out_dir / "run_meta.json"
+    worker = os.environ.get("ARENA_WORKER", "")
+    meta_f = out_dir / (f"run_meta_{worker}.json" if worker else "run_meta.json")
     meta = json.loads(meta_f.read_text(encoding="utf-8")) if meta_f.exists() else {"tokens": 0, "cost_usd": 0.0}
     kw = _completion_kwargs(model)
     meta.update({"suite": suite, "agents": agents, "runs": runs, "model": model, "partial": False, "skipped": [],
@@ -184,14 +188,23 @@ def run_suite(suite: str, agents: list[str], runs: int, model: str, out: str, ca
                 f = out_dir / f"{agent}__{case['id']}__run{k}.json"
                 if f.exists():
                     continue  # resumable
+                lock = f.with_suffix(".lock")
+                try:  # parallel workers: claim the run exclusively (stale locks: delete *.lock and rerun)
+                    os.close(os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY))
+                except FileExistsError:
+                    continue
                 if meta["tokens"] >= token_budget or meta["cost_usd"] >= usd_budget:
+                    lock.unlink(missing_ok=True)
                     meta["partial"] = True
                     meta["skipped"].append(f.name)
                     continue
-                rec = run_one(agent, case, k, model, out_dir, client=client, limiter=limiter)
+                try:
+                    rec = run_one(agent, case, k, model, out_dir, client=client, limiter=limiter)
+                    f.write_text(json.dumps(rec, indent=2, ensure_ascii=False), encoding="utf-8")
+                finally:
+                    lock.unlink(missing_ok=True)  # only after the result exists, so no other worker re-claims it
                 meta["tokens"] += rec["prompt_tokens"] + rec["completion_tokens"]
                 meta["cost_usd"] = round(meta["cost_usd"] + rec["cost_usd"], 6)
-                f.write_text(json.dumps(rec, indent=2, ensure_ascii=False), encoding="utf-8")
                 print(f"{f.name}: {rec['score']['outcome']} calls={rec['tool_calls']} "
                       f"cost=${rec['cost_usd']:.4f}{' ERR ' + rec['error'][:120] if 'error' in rec else ''}", flush=True)
                 meta_f.write_text(json.dumps(meta, indent=2), encoding="utf-8")

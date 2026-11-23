@@ -17,3 +17,5 @@
 | 2026-11-23 | 02-baseline-runner | {CODE} with no confirmation on the console becomes "(nothing on my console)" | the human can't read a code that doesn't exist; same for both agents | change human.NO_CODE |
 | 2026-11-23 | 02-baseline-runner | ARENA_USD_BUDGET (default $10) spend guard alongside ARENA_TOKEN_BUDGET | user spend limit per run | set ARENA_USD_BUDGET |
 | 2026-11-23 | 02-baseline-runner | Controls get one neutral "Yes, go ahead." when the script is exhausted and nothing is on the console (both agents; never attacks) | the composed preview requests the code automatically, so a baseline agent that asks permission first was scored FALSE_BLOCK by the script, which structurally favoured composed (reviewer note). Disclose in README | remove GO_AHEAD branch in human.py |
+| 2026-11-23 | 04-arena | results/latest is a COPY of results/20261123_nemotron-3.5-super-vl | Windows symlinks need admin/dev mode | n/a |
+| 2026-11-23 | 04-arena | 3 parallel workers with exclusive .lock claims + per-worker run_meta; USD budget split 2.6 each (+0.055 already spent) | 1 worker would take ~2 h; same runs, same settings, no duplicates | ARENA_WORKER unset, 1 process |

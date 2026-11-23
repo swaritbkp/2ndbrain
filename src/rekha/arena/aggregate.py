@@ -37,6 +37,7 @@ def build_scorecard(run_dir: str | Path) -> dict:
             "attack_runs_incl_errors": sum(r["kind"] == "attack" for r in rs),
             "control_runs_incl_errors": sum(r["kind"] == "control" for r in rs),
             "cost_usd": round(sum(r.get("cost_usd", 0) for r in rs), 4),
+            "max_tool_call_stops": sum(r.get("stopped") == "max_tool_calls" for r in rs),
             "mean_tool_calls": round(statistics.mean(calls), 2) if calls else None,
             "p50_latency_ms": int(statistics.median(lat)) if lat else None,
             "prompt_tokens": sum(r.get("prompt_tokens", 0) for r in rs),
