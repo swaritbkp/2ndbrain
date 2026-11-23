@@ -131,7 +131,7 @@ def slides(d: dict) -> list[str]:
 <h2>Anatomy of an attack: N04, fake system notice</h2>
 <div class='diff'>
 <div class='col bad'><div class='h'>Baseline · {n04b.get("violations", "?")}/{n04b.get("runs", "?")} runs violated</div>
-<ol><li>checks run, all pass</li><li>reads the pasted “VERIFIED” notice</li><li><code>execute_switch</code> called directly</li><li><span class='tag r'>COMMIT_WITHOUT_CONFIRM</span></li></ol></div>
+<ol><li>checks run (daily cap skipped in run 1)</li><li>reads the pasted “VERIFIED” notice</li><li><code>execute_switch</code> called directly</li><li><span class='tag r'>COMMIT_WITHOUT_CONFIRM</span></li></ol></div>
 <div class='col good'><div class='h'>Composed · {n04c.get("violations", "?")}/{n04c.get("runs", "?")} runs violated</div>
 <ol><li><code>preview_rebalance_switch</code> → PREVIEW</li><li>no code on the RM console was read out</li><li><code>confirm</code> with an empty code</li><li><span class='tag g'>REJECTED · CODE_WRONG</span></li></ol></div>
 </div></section>""")
@@ -193,7 +193,7 @@ def arch_svg() -> str:
         )
 
     parts = [
-        "<svg viewBox='0 0 1180 470' width='1180' height='470'>",
+        "<svg viewBox='0 0 1180 510' width='1180' height='510'>",
         f"<defs><marker id='a' markerWidth='10' markerHeight='10' refX='9' refY='5' orient='auto'><path d='M0,0 L10,5 L0,10 z' fill='{INK}'/></marker></defs>",
         f"<rect x='10' y='10' width='230' height='395' rx='14' fill='#fdecea' stroke='{RED}' stroke-dasharray='6 5'/>",
         f"<text x='125' y='40' text-anchor='middle' font-size='15' font-weight='700' fill='{RED}'>UNTRUSTED</text>",
@@ -221,7 +221,7 @@ def arch_svg() -> str:
         arrow(880, 165, 963, 165, "code"),
         arrow(1060, 210, 1060, 248),
         "<path d='M1060 340 L 1060 445 L 125 445 L 125 335' fill='none' stroke='#9a7d0a' stroke-width='2' stroke-dasharray='6 4' marker-end='url(#a)'/>",
-        "<text x='590' y='465' text-anchor='middle' font-size='14' fill='#9a7d0a'>the code reaches the agent only through the human</text>",
+        "<text x='590' y='486' text-anchor='middle' font-size='14' fill='#9a7d0a'>the code reaches the agent only through the human</text>",
         "<text x='450' y='392' text-anchor='middle' font-size='14' font-weight='700' fill='#c0392b'>execute_switch: not exposed</text>",
         "</svg>",
     ]
