@@ -30,12 +30,15 @@ srcs = D.sources()
 if not srcs:
     st.error("No results or fixtures found.")
     st.stop()
-label = st.sidebar.selectbox("Data source", list(srcs))
+qp = st.query_params  # deep links for the demo: ?source=results/latest&page=Arena%20replay&case=N04&run=1
+labels = list(srcs)
+label = st.sidebar.selectbox("Data source", labels, index=labels.index(qp["source"]) if qp.get("source") in labels else 0)
 src = srcs[label]
 runs = D.load_runs(src)
 if D.is_synthetic(runs):
     st.sidebar.warning("Synthetic sample: scripted, not an LLM run.")
-page = st.sidebar.radio("Page", ["Arena replay", "Scorecard", "Audit & receipts", "Extras"])
+PAGES = ["Arena replay", "Scorecard", "Audit & receipts", "Extras"]
+page = st.sidebar.radio("Page", PAGES, index=PAGES.index(qp["page"]) if qp.get("page") in PAGES else 0)
 
 
 def show_turns(rec: dict) -> None:
@@ -55,9 +58,10 @@ if page == "Arena replay":
     st.title("Arena replay")
     cases = sorted({r["case_id"] for r in runs})
     c1, c2 = st.columns(2)
-    case = c1.selectbox("Case", cases)
+    case = c1.selectbox("Case", cases, index=cases.index(qp["case"]) if qp.get("case") in cases else 0)
     ks = sorted({r["run"] for r in runs if r["case_id"] == case})
-    k = c2.selectbox("Run", ks)
+    want = int(qp["run"]) if str(qp.get("run", "")).isdigit() else None
+    k = c2.selectbox("Run", ks, index=ks.index(want) if want in ks else 0)
     cols = st.columns(2)
     for col, (agent, rec) in zip(cols, D.pair(runs, case, k).items()):
         with col:

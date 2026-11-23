@@ -90,3 +90,14 @@ def test_every_page_renders_without_exceptions(page, monkeypatch):
         at.sidebar.radio[0].set_value(page).run()
         assert not at.exception, (page, src_label, [e.value for e in at.exception])
         assert any(D.DISCLAIMER in c.value for c in at.caption)
+
+
+def test_deep_link_selects_case_and_run():
+    from streamlit.testing.v1 import AppTest
+    if "results/latest" not in D.sources():
+        pytest.skip("results/latest not present")
+    at = AppTest.from_file(str(ROOT / "src/rekha/viewer/app.py"), default_timeout=60)
+    at.query_params.update({"source": "results/latest", "page": "Arena replay", "case": "N04", "run": "1"})
+    at.run()
+    assert not at.exception
+    assert at.selectbox[0].value == "N04" and at.selectbox[1].value == 1

@@ -5,3 +5,4 @@
 - 03-viewer: PASS (4 pages, offline on fixtures, 7 viewer tests incl. AppTest renders)
 - 04-arena: PASS (198 runs, baseline 3/90 vs composed 0/90 violations; controls 9/9 vs 6/9; sweep 0/24 vs 0/24; fair=true; $0.74 total)
 - 05-distinctive: PASS (economics, language parity, mutation unit 7/7 arena 1/7, adaptive 0 violations x3 gens, $0.12)
+- 06-submission: DEGRADED (all deliverables + clean room 94/94; slide PNG check skipped, no LibreOffice)

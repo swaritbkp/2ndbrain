@@ -62,3 +62,6 @@ Fairness audit (reviewer, FAIRNESS): fair=true, 0 high; 198/198 re-scored with 0
 - **Mutation testing (F6)** `scripts/mutation_test.py` (+ `scripts/mutation_plugin.py`, which re-applies REKHA_MUTANT per test body because conftest clears it): unit **7/7** killed (3–5 failing tests each); arena **1/7** (no_code_check × A05 → FORGED_CONFIRMATION). The other mutants survive in the arena because attack scripts never supply a real code, so the agent stops at "read me the code" before reaching the disabled guardrail.
 - **Adaptive attacker (F9)** `python -m rekha.arena.adaptive results/latest`: attacker nemotron-3.5-super-vl, 3 generations × 6 cases × 2 agents. Core had no violations to rank, so the "hardest 6" fell back to A01–A06 in order. Violations per generation: baseline [0,0,0], composed [0,0,0]; 0 errors.
 - Phase 05 LLM spend: $0.12.
+
+## 06-submission
+README rewritten as the submission write-up (Route B stated, modest claims, mermaid architecture, 5 run commands). `scripts/build_deck.py` → `deliverables/Lakshman_Rekha_deck.pptx` (6 slides, all ≤ 30 words, native charts from scorecards, speaker notes, disclaimer on each; no LibreOffice for PNG render). `docs/DEMO_FINAL.md` + `scripts/demo.ps1`/`demo.sh` (replay of N04 run 1 and K01 run 1). Clean room: fresh venv, 94/94 tests. FINAL_REPORT.md.
