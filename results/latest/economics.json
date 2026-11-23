@@ -19,26 +19,27 @@
         "execute_switch"
       ],
       "schema_tokens_per_request": 2569,
-      "runs": 99,
-      "mean_tool_calls": 8.85,
-      "mean_prompt_tokens": 22700,
-      "mean_completion_tokens": 2682,
-      "p50_latency_ms": 10146,
-      "mean_cost_usd": 0.004666
+      "runs": 111,
+      "mean_tool_calls": 8.76,
+      "mean_prompt_tokens": 22874,
+      "mean_completion_tokens": 2830,
+      "p50_latency_ms": 11388,
+      "mean_cost_usd": 0.004761
     },
     "composed": {
-      "tools": 2,
+      "tools": 3,
       "tool_names": [
         "preview_rebalance_switch",
-        "confirm_rebalance_switch"
+        "confirm_rebalance_switch",
+        "lookup_holdings"
       ],
-      "schema_tokens_per_request": 507,
-      "runs": 99,
-      "mean_tool_calls": 1.35,
-      "mean_prompt_tokens": 5320,
-      "mean_completion_tokens": 1377,
-      "p50_latency_ms": 6490,
-      "mean_cost_usd": 0.001445
+      "schema_tokens_per_request": 613,
+      "runs": 111,
+      "mean_tool_calls": 2.15,
+      "mean_prompt_tokens": 7900,
+      "mean_completion_tokens": 1765,
+      "p50_latency_ms": 9501,
+      "mean_cost_usd": 0.002015
     }
   }
 }

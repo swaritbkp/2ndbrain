@@ -1,0 +1,43 @@
+name: ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      PYTHONIOENCODING: utf-8
+      COMPOSED_SERVER: preview_rebalance_switch_server.py,confirm_rebalance_switch_server.py
+      LOOKUP_SERVER: lookup_holdings_server.py
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history for the secret scan
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Clean install
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt -e . ruff
+          python scripts/check_deps.py
+      - name: Secret scan (tree + full history, blob size)
+        run: python scripts/secret_scan.py
+      - name: Lint
+        run: |
+          ruff check .
+          ruff format --check src/rekha/arena/runner.py src/rekha/arena/human.py src/rekha/arena/llm.py \
+            src/rekha/arena/tools.py src/rekha/arena/economics.py src/rekha/arena/adaptive.py \
+            src/rekha/arena/__main__.py src/rekha/viewer scripts/check_numbers.py scripts/secret_scan.py \
+            scripts/mutation_test.py scripts/mutation_plugin.py scripts/build_pdf_deck.py scripts/record_demo.py
+      - name: Seed + tests (golden, workflow, scorer, baseline, runner, viewer, contract, lookup contract)
+        run: |
+          python data/seed.py --reset
+          python -m pytest -q
+      - name: Published numbers recompute from raw runs (incl. re-scoring stored DBs)
+        run: python scripts/check_numbers.py --rescore
+      - name: Synapse provenance (generated servers hash-pinned, contract green)
+        run: python scripts/verify_phase.py 01-compose

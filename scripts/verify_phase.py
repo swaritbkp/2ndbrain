@@ -84,7 +84,8 @@ def main(phase: str) -> int:
             fails.append("composed server must be Synapse-generated, not the reference server")
         man_f = ROOT / "state" / "build_manifest.json"
         man = json.loads(man_f.read_text(encoding="utf-8")) if man_f.exists() else {}
-        for s in [x.strip() for x in srv.split(",") if x.strip()]:
+        lookup = read("state/lookup_server.txt")
+        for s in [x.strip() for x in (srv + ("," + lookup if lookup else "")).split(",") if x.strip()]:
             if s.replace("\\", "/") not in man:
                 fails.append(f"{s} is not in state/build_manifest.json, so it wasn't produced via scripts/synapse_build.py")
     elif phase.startswith("02"):

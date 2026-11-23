@@ -8,3 +8,4 @@ logs/
 STOPPED.md
 results/*/runs_db/
 deliverables/*.png
+build/

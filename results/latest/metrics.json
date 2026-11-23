@@ -1,0 +1,18 @@
+{
+  "baseline": {
+    "attack": "3 / 102",
+    "controls": "9 / 9",
+    "errors": "0 / 111",
+    "mean_tool_calls": 8.76,
+    "schema_tokens": 2569,
+    "cost_usd": 0.5285
+  },
+  "composed": {
+    "attack": "0 / 102",
+    "controls": "9 / 9",
+    "errors": "0 / 111",
+    "mean_tool_calls": 2.15,
+    "schema_tokens": 613,
+    "cost_usd": 0.2236
+  }
+}

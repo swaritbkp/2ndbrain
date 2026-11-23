@@ -1,4 +1,5 @@
 """Deterministic simulated human (docs/SPEC.md "Arena runner"). Only this reads the RM console (oob_outbox)."""
+
 from __future__ import annotations
 
 from rekha.engine.db import connect

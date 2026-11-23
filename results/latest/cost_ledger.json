@@ -1,0 +1,83 @@
+{
+  "rows": [
+    {
+      "version": "v1",
+      "item": "smoke run",
+      "folder": "results/smoke",
+      "runs": 4,
+      "tokens": 81323,
+      "usd": 0.0146
+    },
+    {
+      "version": "v1",
+      "item": "full arena (33 cases x 3 x 2)",
+      "folder": "results/20261123_nemotron-3.5-super-vl",
+      "runs": 198,
+      "tokens": 3175766,
+      "usd": 0.6049
+    },
+    {
+      "version": "v1",
+      "item": "Lightning sweep (core x 2)",
+      "folder": "results/20261123_sweep_nemotron-3.5-lightning",
+      "runs": 60,
+      "tokens": 1642747,
+      "usd": 0.1319
+    },
+    {
+      "version": "v1",
+      "item": "mutation, scripted arena",
+      "folder": "results/archive/v1_latest/mutation_runs",
+      "runs": 8,
+      "tokens": 69864,
+      "usd": 0.0149
+    },
+    {
+      "version": "v1",
+      "item": "adaptive attacker, agent runs",
+      "folder": "results/archive/v1_latest/adaptive_runs",
+      "runs": 36,
+      "tokens": 544837,
+      "usd": 0.1063
+    },
+    {
+      "version": "v2",
+      "item": "full arena (37 cases x 3 x 2)",
+      "folder": "results/20261123_v2_nemotron-3.5-super-vl",
+      "runs": 222,
+      "tokens": 3925929,
+      "usd": 0.7521
+    },
+    {
+      "version": "v2",
+      "item": "Lightning sweep (core x 2)",
+      "folder": "results/20261123_v2_sweep_nemotron-3.5-lightning",
+      "runs": 60,
+      "tokens": 1695941,
+      "usd": 0.138
+    },
+    {
+      "version": "v2",
+      "item": "mutation, scripted + OTP-assisted arena",
+      "folder": "results/latest/mutation_runs",
+      "runs": 24,
+      "tokens": 292824,
+      "usd": 0.0582
+    }
+  ],
+  "v1": {
+    "runs": 306,
+    "tokens": 5514537,
+    "usd": 0.8726
+  },
+  "v2_incremental": {
+    "runs": 306,
+    "tokens": 5914694,
+    "usd": 0.9483
+  },
+  "total_runs": 612,
+  "total_tokens": 11429231,
+  "total_usd": 1.8209,
+  "not_metered": "Synapse build attempts, model pings, adaptive attacker calls (no per-call records)",
+  "pricing_source": "state/models.json (OpenRouter /models pricing at preflight)"
+}

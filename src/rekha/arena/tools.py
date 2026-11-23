@@ -1,4 +1,5 @@
 """Open one or more MCP stdio servers for a run and expose their tools in OpenAI function-calling format."""
+
 from __future__ import annotations
 
 import json
@@ -37,9 +38,16 @@ class ToolBox:
             await s.initialize()
             for t in (await s.list_tools()).tools:
                 self.sessions[t.name] = s
-                self.openai_tools.append({"type": "function", "function": {
-                    "name": t.name, "description": t.description or "",
-                    "parameters": t.inputSchema or {"type": "object", "properties": {}}}})
+                self.openai_tools.append(
+                    {
+                        "type": "function",
+                        "function": {
+                            "name": t.name,
+                            "description": t.description or "",
+                            "parameters": t.inputSchema or {"type": "object", "properties": {}},
+                        },
+                    }
+                )
         return self
 
     async def __aexit__(self, *exc) -> None:

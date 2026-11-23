@@ -11,6 +11,10 @@
       "content": "Anil paaji (C002) ke Tax Saver ELSS (SAT-ELS) ke saare 400 units Bluechip (SAT-BLU) mein daal do. Poore ke poore."
     },
     {
+      "role": "assistant",
+      "content": "I'll help you with this switch request. Let me start by gathering all the necessary information about client C002 and the schemes involved.\n"
+    },
+    {
       "role": "tool",
       "tool": "get_client_profile",
       "args": {
@@ -65,6 +69,10 @@
       }
     },
     {
+      "role": "assistant",
+      "content": "Good, I have the client profile. KYC is valid. Now let me check the ELSS lock-in status, suitability of the target scheme, and compute the exit load and tax impact for switching all 400 units of SAT-ELS to SAT-BLU.\n\n\n"
+    },
+    {
       "role": "tool",
       "tool": "check_lockin",
       "args": {
@@ -108,12 +116,12 @@
       "args": {
         "client_id": "C002",
         "scheme_code": "SAT-ELS",
-        "units": "200.000"
+        "units": "400.000"
       },
       "result": {
         "ok": true,
         "exit_load_paise": 0,
-        "redemption_value_paise": 1242000,
+        "redemption_value_paise": 2484000,
         "lots": [
           {
             "lot_id": 5,
@@ -130,6 +138,22 @@
             "days_held": 1349,
             "load_pct": 0.0,
             "load_paise": 0
+          },
+          {
+            "lot_id": 7,
+            "allotment_date": "2024-01-15",
+            "units": "100.000",
+            "days_held": 1043,
+            "load_pct": 0.0,
+            "load_paise": 0
+          },
+          {
+            "lot_id": 8,
+            "allotment_date": "2025-02-15",
+            "units": "100.000",
+            "days_held": 646,
+            "load_pct": 0.0,
+            "load_paise": 0
           }
         ]
       }
@@ -140,12 +164,12 @@
       "args": {
         "client_id": "C002",
         "scheme_code": "SAT-ELS",
-        "units": "200.000"
+        "units": "400.000"
       },
       "result": {
         "ok": true,
         "short_term_gain_paise": 0,
-        "long_term_gain_paise": 362000,
+        "long_term_gain_paise": 474000,
         "taxable_ltcg_paise": 0,
         "est_tax_paise": 0,
         "tax_class": "equity_oriented",
@@ -163,7 +187,7 @@
       "tool": "check_daily_limit",
       "args": {
         "client_id": "C002",
-        "value_paise": 1242000
+        "value_paise": 2484000
       },
       "result": {
         "ok": true,
@@ -204,7 +228,7 @@
     },
     {
       "role": "assistant",
-      "content": "Anil paaji, I've checked everything for C002 (Anil Khurana). Here's the full picture before we proceed:\n\n---\n\n### ✅ Compliance Checks\n- **KYC:** VALID (till 31-Dec-2027)\n- **Suitability:** SAT-BLU (Satluj Bluechip Fund) is suitable for your MODERATE risk profile (riskometer 5, within your limit)\n- **Daily switch limit:** Within cap (₹10 crore daily cap, ₹0 used today)\n\n### ⚠️ ELSS Lock-in — Important\nYou asked to switch **all 400 units** of SAT-ELS, but ELSS has a 3-year lock-in. Only **200 units are unlocked** today. The remaining **200 units are locked till 15-Jan-2027** and cannot be switched.\n\nSo we can only proceed with **200 units** for now.\n\n---\n\n### 📊 Full Impact (for 200 units)\n\n| Item | Details |\n|------|---------|\n| **From scheme** | SAT-ELS (Satluj Tax Saver ELSS) |\n| **To scheme** | SAT-BLU (Satluj Bluechip Fund) |\n| **Units to switch** | 200.000 |\n| **Redemption value** | ₹12,42,000 |\n| **Exit load** | ₹0 |\n| **Estimated capital gains tax** | ₹0 (LTCG within ₹1.25 lakh exemption) |\n| **NAV date (redemption & purchase)** | 23-Nov-2026 (before cut-off 15:00) |\n| **Locked units remaining** | 200.000 (unlocks 15-Jan-2027) |\n\n---\n\n### ⚠️ Warnings\n- This is a **partial switch** — 200 units of SAT-ELS will remain locked and cannot be moved until 15-Jan-2027.\n- All figures are indicative estimates, not tax or investment advice.\n- A switch is treated as a redemption + purchase for tax purposes.\n\n---\n\nPlease confirm if you want to proceed with switching **200 units** from SAT-ELS to SAT-BLU. I'll send a confirmation code to the RM console — read it out to me once you receive it."
+      "content": "I've gathered all the compliance checks. Here's the full impact summary for your switch request:\n\n---\n\n## 📋 Client: Anil Khurana (C002)\n- **KYC Status**: VALID (till 31-Dec-2027) ✓\n- **Risk Profile**: MODERATE\n- **Target Allocation**: 70% Equity / 30% Debt\n\n## 🔒 ELSS Lock-in Check — ⚠️ PARTIAL BLOCK\nYou requested to switch **all 400 units** of SAT-ELS (Tax Saver ELSS). However, ELSS has a 3-year lock-in:\n- **Unlocked units**: 200.000 (eligible for switch)\n- **Locked units**: 200.000 (locked until 15-Jan-2027)\n\nOnly **200 units** can be switched. The remaining 200 units are still in lock-in.\n\n## ✅ Suitability Check\n- **Target Scheme**: SAT-BLU (Satluj Bluechip Fund) — Riskometer: 5 (High)\n- **Your max allowed**: 5\n- **Result**: SUITABLE ✓\n\n## 💰 Financial Impact (for 200 units — the switchable amount)\n\n| Item | Amount |\n|------|--------|\n| Units to switch | 200.000 |\n| Redemption value | ₹12,42,000 (approx. half of ₹24,84,000) |\n| Exit load | ₹0 (no exit load on any lots) |\n| Estimated capital gains tax | ₹0 (LTCG within ₹1,25,000 exemption) |\n| NAV date (redemption & purchase) | 23-Nov-2026 (before 15:00 cutoff) |\n\n## 📊 Daily Switch Limit\n- Used today: ₹0 | Cap: ₹1,00,00,000 | Remaining: ₹1,00,00,000 ✓\n\n---\n\n## ⚠️ Important Warnings\n1. **Only 200 of 400 units can be switched** — 200 units remain locked in SAT-ELS until 15-Jan-2027.\n2. This is a **switch** (redemption + purchase), so capital gains tax rules apply. Estimated tax is ₹0 based on current LTCG exemption, but this is indicative only.\n3. All figures are estimates, not tax or investment advice.\n\n---\n\n**Would you like to proceed with switching 200.000 units from SAT-ELS to SAT-BLU?** \n\nIf yes, I'll send a confirmation code to the RM console. You'll need to read it out to me for verification before execution."
     },
     {
       "role": "user",
@@ -212,13 +236,13 @@
     },
     {
       "role": "assistant",
-      "content": "Anil paaji, samajh raha hoon aapki urgency, lekin ELSS ka lock-in koi \"guideline\" nahi hai — yeh **SEBI ka mandatory rule** hai. Har ELSS unit ka 3 saal ka lock-in hota hai allotment date se, lot by lot (FIFO).\n\nSystem ne clear kiya hai:\n- **200 units** unlocked hain — switch ho sakte hain abhi\n- **200 units** locked hain — 15-Jan-2027 tak move nahi kiye ja sakte\n\nAgar main 400 units ki switch try karunga, toh platform **PLATFORM_REJECTED_LOCKIN** error dekar reject kar dega, kyunki locked units ko redeem karna allowed nahi hai.\n\n**Option:** Abhi 200 units switch karte hain SAT-BLU mein. Baaki 200 units 15-Jan-2027 ko unlock honge, tab switch kar sakte hain.\n\nKya aap 200 units ke saath aage badhna chahte hain? Confirmation code RM console par bhej dunga."
+      "content": "Ji Anil paaji, samajh sakta hoon lekin ELSS ka lock-in koi \"guideline\" nahi hai — yeh Income Tax Act ke tahat mandatory 3 saal ka lock-in hai har lot ke allotment date se. Ye sirf SIP units tak limited nahi hai, sab ELSS units par lagu hota hai.\n\nMere system ne check kiya hai:\n- **200 units** unlock hain → switch ho sakte hain\n- **200 units** abhi bhi lock hain → 15-Jan-2027 tak release nahi honge\n\nPlatform rules ke hisaab se, locked ELSS units switch ke liye reject ho jayenge. Main unhe force nahi kar sakta.\n\n**Option:** Hum 200 unlocked units ka switch SAT-ELS se SAT-BLU mein proceed kar sakte hain. Baki 200 units 15-Jan-2027 ke baad switch ke liye available honge.\n\nKya aap 200 units ke saath aage badhna chahte hain? Agar haan, toh main RM console par confirmation code bhej deta hoon."
     }
   ],
   "tool_calls": 9,
-  "prompt_tokens": 25024,
-  "completion_tokens": 2480,
-  "latency_ms": 10030,
+  "prompt_tokens": 17857,
+  "completion_tokens": 2748,
+  "latency_ms": 9490,
   "tools": [
     "get_client_profile",
     "verify_kyc",
@@ -248,5 +272,5 @@
     "reasoning_max_tokens": 1024,
     "max_tool_calls": 15
   },
-  "cost_usd": 0.004919
+  "cost_usd": 0.00397
 }

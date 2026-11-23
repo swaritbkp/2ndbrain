@@ -2,6 +2,7 @@
 
 Both agents get the same model, temperature, system prompt, scripted human and tool-call cap; only the tool surface differs.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -23,7 +24,12 @@ from rekha.arena.tools import ToolBox
 ROOT = Path(__file__).resolve().parents[3]
 ARENA = Path(__file__).resolve().parent
 MAX_TOOL_CALLS = 15
-SUITES = {"core": ["attacks.yaml"], "extra": ["attacks_extra.yaml"], "all": ["attacks.yaml", "attacks_extra.yaml"]}
+SUITES = {
+    "core": ["attacks.yaml"],
+    "extra": ["attacks_extra.yaml"],
+    "v2": ["attacks_v2.yaml"],
+    "all": ["attacks.yaml", "attacks_extra.yaml", "attacks_v2.yaml"],
+}
 
 
 def load_cases(suite: str, only: list[str] | None = None) -> list[dict]:
@@ -36,14 +42,21 @@ def load_cases(suite: str, only: list[str] | None = None) -> list[dict]:
 
 
 def servers_for(agent: str) -> list[str]:
-    f = {"baseline": "baseline_server.txt", "composed": "composed_server.txt"}[agent]
-    txt = (ROOT / "state" / f).read_text(encoding="utf-8").strip()
-    return [s.strip() for s in txt.split(",") if s.strip()]
+    """baseline: the 12-tool server. composed: the preview/confirm write pair + the read-only discovery server
+    (state/lookup_server.txt) when present: read-only discovery is kept apart from write-path containment."""
+    files = {"baseline": ["baseline_server.txt"], "composed": ["composed_server.txt", "lookup_server.txt"]}[agent]
+    out: list[str] = []
+    for f in files:
+        p = ROOT / "state" / f
+        if p.exists():
+            out += [s.strip() for s in p.read_text(encoding="utf-8").split(",") if s.strip()]
+    return out
 
 
 def pristine_db(out_dir: Path) -> Path:
     sys.path.insert(0, str(ROOT / "data"))
     import seed  # noqa: PLC0415
+
     p = out_dir / "runs_db" / "pristine.db"
     if not p.exists():
         p.parent.mkdir(parents=True, exist_ok=True)
@@ -64,8 +77,11 @@ def price(model: str) -> tuple[float, float]:
 
 
 def _completion_kwargs(model: str) -> dict:
-    kw = {"model": model, "temperature": float(os.environ.get("ARENA_TEMPERATURE", "0.2")),
-          "max_tokens": max(int(os.environ.get("ARENA_MAX_TOKENS", "4000")), 2000)}
+    kw = {
+        "model": model,
+        "temperature": float(os.environ.get("ARENA_TEMPERATURE", "0.2")),
+        "max_tokens": max(int(os.environ.get("ARENA_MAX_TOKENS", "4000")), 2000),
+    }
     reasoning = int(os.environ.get("ARENA_REASONING_TOKENS", "1024"))
     if reasoning > 0:  # cap thinking so a reasoning model can't burn the whole turn budget
         kw["extra_body"] = {"reasoning": {"max_tokens": reasoning}}
@@ -75,9 +91,14 @@ def _completion_kwargs(model: str) -> dict:
 def _assistant_msg(m) -> dict:
     d = {"role": "assistant", "content": m.content or ""}
     if m.tool_calls:
-        d["tool_calls"] = [{"id": c.id, "type": "function",
-                            "function": {"name": c.function.name, "arguments": c.function.arguments or "{}"}}
-                           for c in m.tool_calls]
+        d["tool_calls"] = [
+            {
+                "id": c.id,
+                "type": "function",
+                "function": {"name": c.function.name, "arguments": c.function.arguments or "{}"},
+            }
+            for c in m.tool_calls
+        ]
     return d
 
 
@@ -117,23 +138,46 @@ async def _agent_loop(case, toolbox, human, client, model, limiter, rec) -> None
         msgs.append({"role": "user", "content": nxt})
 
 
-def run_one(agent: str, case: dict, k: int, model: str, out_dir: Path, client=None, limiter=None,
-            server_env: dict | None = None, tag: str = "") -> dict:
+def run_one(
+    agent: str,
+    case: dict,
+    k: int,
+    model: str,
+    out_dir: Path,
+    client=None,
+    limiter=None,
+    server_env: dict | None = None,
+    tag: str = "",
+) -> dict:
     """server_env: extra env for the MCP server(s) only (e.g. REKHA_MUTANT for mutation testing)."""
     out_dir = Path(out_dir)
     pre = pristine_db(out_dir)
     db = out_dir / "runs_db" / f"{agent}__{case['id']}{tag}__run{k}.db"
     shutil.copyfile(pre, db)
-    env = {"REKHA_DB": str(db), "REKHA_NOW": os.environ.get("REKHA_NOW", "2026-11-23T14:55:00+05:30"),
-           "REKHA_AS_OF": os.environ.get("REKHA_AS_OF", "2026-11-23"),
-           "REKHA_TOKEN_SECRET": os.environ.get("REKHA_TOKEN_SECRET", "arena-secret")}
+    env = {
+        "REKHA_DB": str(db),
+        "REKHA_NOW": os.environ.get("REKHA_NOW", "2026-11-23T14:55:00+05:30"),
+        "REKHA_AS_OF": os.environ.get("REKHA_AS_OF", "2026-11-23"),
+        "REKHA_TOKEN_SECRET": os.environ.get("REKHA_TOKEN_SECRET", "arena-secret"),
+    }
     env.update(server_env or {})
-    rec = {"agent": agent, "case_id": case["id"], "kind": case.get("kind", "attack"), "run": k, "model": model,
-           "language": case.get("language", "en"), "turns": [], "tool_calls": 0, "prompt_tokens": 0,
-           "completion_tokens": 0, "latency_ms": 0}
+    rec = {
+        "agent": agent,
+        "case_id": case["id"],
+        "kind": case.get("kind", "attack"),
+        "run": k,
+        "model": model,
+        "language": case.get("language", "en"),
+        "turns": [],
+        "tool_calls": 0,
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "latency_ms": 0,
+    }
     human = SimHuman(case, str(db))
     if client is None:
         from openai import OpenAI  # noqa: PLC0415
+
         client = OpenAI(**models.client_kwargs(), timeout=180)
     t0 = time.time()
 
@@ -159,16 +203,20 @@ def run_one(agent: str, case: dict, k: int, model: str, out_dir: Path, client=No
     if "error" in rec and rec["score"]["outcome"] != "VIOLATION":
         rec["score"]["outcome"] = "ERROR"
     kw = _completion_kwargs(model)
-    rec["settings"] = {"temperature": kw["temperature"], "max_tokens": kw["max_tokens"],
-                       "reasoning_max_tokens": kw.get("extra_body", {}).get("reasoning", {}).get("max_tokens", 0),
-                       "max_tool_calls": MAX_TOOL_CALLS}
+    rec["settings"] = {
+        "temperature": kw["temperature"],
+        "max_tokens": kw["max_tokens"],
+        "reasoning_max_tokens": kw.get("extra_body", {}).get("reasoning", {}).get("max_tokens", 0),
+        "max_tool_calls": MAX_TOOL_CALLS,
+    }
     pin, pout = price(model)
     rec["cost_usd"] = round(rec["prompt_tokens"] * pin + rec["completion_tokens"] * pout, 6)
     return rec
 
 
-def run_suite(suite: str, agents: list[str], runs: int, model: str, out: str, cases: list[str] | None = None,
-              client=None) -> dict:
+def run_suite(
+    suite: str, agents: list[str], runs: int, model: str, out: str, cases: list[str] | None = None, client=None
+) -> dict:
     out_dir = Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
     token_budget = int(os.environ.get("ARENA_TOKEN_BUDGET", "4000000"))
@@ -178,10 +226,20 @@ def run_suite(suite: str, agents: list[str], runs: int, model: str, out: str, ca
     meta_f = out_dir / (f"run_meta_{worker}.json" if worker else "run_meta.json")
     meta = json.loads(meta_f.read_text(encoding="utf-8")) if meta_f.exists() else {"tokens": 0, "cost_usd": 0.0}
     kw = _completion_kwargs(model)
-    meta.update({"suite": suite, "agents": agents, "runs": runs, "model": model, "partial": False, "skipped": [],
-                 "temperature": kw["temperature"], "max_tokens": kw["max_tokens"],
-                 "reasoning_max_tokens": kw.get("extra_body", {}).get("reasoning", {}).get("max_tokens", 0),
-                 "max_tool_calls": MAX_TOOL_CALLS})
+    meta.update(
+        {
+            "suite": suite,
+            "agents": agents,
+            "runs": runs,
+            "model": model,
+            "partial": False,
+            "skipped": [],
+            "temperature": kw["temperature"],
+            "max_tokens": kw["max_tokens"],
+            "reasoning_max_tokens": kw.get("extra_body", {}).get("reasoning", {}).get("max_tokens", 0),
+            "max_tool_calls": MAX_TOOL_CALLS,
+        }
+    )
     for case in load_cases(suite, cases):
         for k in range(1, runs + 1):
             for agent in agents:
@@ -205,8 +263,11 @@ def run_suite(suite: str, agents: list[str], runs: int, model: str, out: str, ca
                     lock.unlink(missing_ok=True)  # only after the result exists, so no other worker re-claims it
                 meta["tokens"] += rec["prompt_tokens"] + rec["completion_tokens"]
                 meta["cost_usd"] = round(meta["cost_usd"] + rec["cost_usd"], 6)
-                print(f"{f.name}: {rec['score']['outcome']} calls={rec['tool_calls']} "
-                      f"cost=${rec['cost_usd']:.4f}{' ERR ' + rec['error'][:120] if 'error' in rec else ''}", flush=True)
+                print(
+                    f"{f.name}: {rec['score']['outcome']} calls={rec['tool_calls']} "
+                    f"cost=${rec['cost_usd']:.4f}{' ERR ' + rec['error'][:120] if 'error' in rec else ''}",
+                    flush=True,
+                )
                 meta_f.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     meta_f.write_text(json.dumps(meta, indent=2), encoding="utf-8")
     return meta

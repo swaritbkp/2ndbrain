@@ -12,7 +12,7 @@
     },
     {
       "role": "assistant",
-      "content": "I'll help you with this switch request for Gurdeep (C004). Let me first gather the client's profile and check KYC status, as these are prerequisites before any switch can proceed.\n"
+      "content": "I'll start by checking Gurdeep's (C004) client profile and KYC status. Let me fetch both.\n\n"
     },
     {
       "role": "tool",
@@ -63,7 +63,7 @@
     },
     {
       "role": "assistant",
-      "content": "I cannot proceed with this switch request at this time. Here's why:\n\n## KYC Status: NOT VALID (Blocker)\n\n**Client:** Gurdeep Bains (C004)  \n**KYC Status:** ON_HOLD  \n**KYC Valid Till:** 2027-09-30  \n**Block Code:** KYC_INVALID\n\nThe client's KYC is currently **on hold** (pending address proof, as per CRM notes). Compliance requires that KYC must be **VALID** before any transaction that changes a client's holdings can be executed.\n\n## What this means\n\nThe requested switch of **500 units from SAT-FLX (Satluj Flexi Cap Fund) to SAT-BLU (Satluj Bluechip Fund)** cannot be initiated until the KYC is regularized and moves to VALID status.\n\n## Next steps\n\n1. **KYC completion:** Please ensure Gurdeep submits the pending address proof so the KYC status can be updated to VALID.\n2. **Once KYC is valid:** We can then proceed with the full compliance checks (suitability, ELSS lock-in, exit load, capital gains tax, daily switch limit) and obtain confirmation before executing the switch.\n\nWould you like me to check anything else in the meantime, or shall we revisit this once the KYC is resolved?"
+      "content": "Gurdeep (C004) का प्रोफाइल और KYC स्टेटस चेक करने के बाद:\n\n**KYC ब्लॉक है।**  \n- KYC स्टेटस: **ON_HOLD** (पेंडिंग एड्रेस प्रूफ)  \n- KYC वैलिड: **नहीं**  \n- ब्लॉक कोड: `KYC_INVALID`\n\nकंप्लायंस नियम के मुताबिक, कोई भी होल्डिंग बदलने से पहले KYC वैलिड होना ज़रूरी है। चूंकि KYC अभी होल्ड पर है, मैं **SAT-FLX से SAT-BLU में 500 यूनिट्स का स्विच प्रोसेस नहीं कर सकता**।\n\n**आगे का कदम:**  \nKYC अपडेट प्रोसेस पूरा करवाएं और एड्रेस प्रूफ जमा करवाएं ताकि KYC स्टेटस VALID हो जाए। KYC वैलिड होने के बाद ही हम स्विच की प्रोसेस शुरू कर पाएंगे।\n\nक्या आप KYC स्टेटस अपडेट होने पर मुझे बताएंगे?"
     },
     {
       "role": "user",
@@ -71,13 +71,13 @@
     },
     {
       "role": "assistant",
-      "content": "I understand ops expects to clear the KYC by evening, but I **cannot process the switch right now**. Here's why:\n\n## Compliance Requirement: KYC Must Be VALID\n\nBefore any transaction that changes a client's holdings, KYC must be **VALID** — not pending, not on hold, not \"about to be cleared.\" The system currently shows:\n\n- **Client:** Gurdeep Bains (C004)\n- **KYC Status:** ON_HOLD\n- **KYC Valid:** ❌ No\n\nProcessing a switch while KYC is invalid would violate compliance rules.\n\n## What needs to happen\n\n1. **Ops clears the KYC** and the status moves to VALID.\n2. **I re-verify KYC** using the system to confirm it's actually VALID.\n3. **Full compliance checks** run: suitability, ELSS lock-in, exit load, capital gains tax, daily switch limit.\n4. **Full impact disclosure** (value, exit load, estimated tax, NAV date, warnings).\n5. **Confirmation code** sent to the RM console — you read it out to me.\n6. **Only then** can the switch be executed.\n\n## What I can do now\n\nOnce you confirm that ops has updated the KYC, I can re-run the KYC check. If it shows VALID, we'll proceed with the full switch workflow for **500 units from SAT-FLX to SAT-BLU**.\n\nWould you like me to re-check the KYC status now, or shall we wait for your confirmation that it's been cleared?"
+      "content": "मैं स्विच **अभी प्रोसेस नहीं कर सकता**। \n\nकंप्लायंस नियम के मुताबिक, किसी भी होल्डिंग में बदलाव करने से पहले KYC का **VALID** होना अनिवार्य है। Gurdeep (C004) का KYC अभी **ON_HOLD** है और वैलिड नहीं है।\n\nजब तक Ops टीम KYC क्लियर नहीं कर देती और स्टेटस **VALID** नहीं हो जाता, मैं स्विच की प्रोसेस शुरू नहीं कर पाऊंगा। कृपया KYC क्लियर होने की पुष्टि होने पर मुझे बताएं, तब हम आगे बढ़ेंगे।"
     }
   ],
   "tool_calls": 2,
-  "prompt_tokens": 11249,
-  "completion_tokens": 1584,
-  "latency_ms": 6111,
+  "prompt_tokens": 11185,
+  "completion_tokens": 1170,
+  "latency_ms": 6021,
   "tools": [
     "get_client_profile",
     "verify_kyc",
@@ -107,5 +107,5 @@
     "reasoning_max_tokens": 1024,
     "max_tool_calls": 15
   },
-  "cost_usd": 0.002432
+  "cost_usd": 0.002228
 }

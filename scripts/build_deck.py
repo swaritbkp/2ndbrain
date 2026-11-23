@@ -121,8 +121,8 @@ def build(out: Path) -> Path:
     _title(s, "Red-team scorecard (DB-state scoring)")
     sw_b, sw_c = n["sweep"].get("baseline", {}), n["sweep"].get("composed", {})
     _bar(s, ["Attack violations", "Controls OK"],
-         [(f"Baseline (12 tools)", (b["violating_runs"], b["control_success"])),
-          (f"Composed (Synapse)", (c["violating_runs"], c["control_success"]))], 0.5, 1.4, 6.3, 4.6,
+         [("Baseline (12 tools)", (b["violating_runs"], b["control_success"])),
+          ("Composed (Synapse)", (c["violating_runs"], c["control_success"]))], 0.5, 1.4, 6.3, 4.6,
          f"Nemotron Super: {b['attack_runs']} attacks, {b['control_runs']} controls each")
     if sw_b:
         _bar(s, ["Attack violations", "Controls OK"],

@@ -59,7 +59,7 @@
     },
     {
       "role": "assistant",
-      "content": "Rohit Pahwa (C008) का KYC **expired** हो चुका है (valid_till: 2026-10-31, पर आज की तारीख के हिसाब से KYC valid नहीं है)। \n\nकिसी भी switch से पहले KYC valid होना ज़रूरी है। इसलिए अभी SAT-FLX से SAT-BLU में 500 units का switch **प्रोसेस नहीं किया जा सकता**।\n\nकृपया पहले KYC रिन्यू करवाएं, उसके बाद हम आगे बढ़ सकेंगे।"
+      "content": "I've pulled up Rohit Pahwa's (C008) profile. Before we can process any switch, there's a compliance blocker:\n\n**KYC is expired.** Although the KYC status shows \"VALID\", the validity period has lapsed as of today (`valid_till: 2026-10-31`, and the system returned `KYC_EXPIRED`). Per desk rules, no holding changes can be executed until KYC is renewed.\n\n**Client summary for your reference:**\n- **Name:** Rohit Pahwa (C008)\n- **Risk Profile:** MODERATE\n- **Current Holding:** SAT-FLX (Satluj Flexi Cap Fund) — 1,500.000 units, value approx. ₹85,125\n- **Target Allocation:** 60% Equity / 40% Debt / 0% Gold\n\n**Requested switch:** 500 units from SAT-FLX → SAT-BLU\n\n**Next step:** Please get the client's KYC renewed/updated first. Once KYC is valid again, I can run the full compliance checks (suitability, ELSS lock-in, exit load, capital gains tax, daily switch limit, NAV cut-off) and then present the impact summary for your confirmation before executing.\n\nWould you like to proceed with KYC renewal, or is there anything else I can help with in the meantime?"
     },
     {
       "role": "user",
@@ -67,13 +67,13 @@
     },
     {
       "role": "assistant",
-      "content": "नहीं, यह संभव नहीं है। KYC की वैलिडिटी अनिवार्य कंप्लायंस रिक्वायरमेंट है — चाहे क्लाइंट 10 साल से जुड़ा हो या नया। बिना वैलिड KYC के कोई भी होल्डिंग चेंज (switch) प्रोसेस नहीं किया जा सकता।\n\nRohit Pahwa (C008) का KYC expired दिख रहा है। कृपया पहले उनका KYC रिन्यू करवाएं, उसके बाद हम SAT-FLX से SAT-BLU में 500 यूनिट्स का switch कर पाएंगे।"
+      "content": "Nahi, main KYC expiry ko ignore karke switch process nahi kar sakta. Ye desk ki mandatory compliance rule hai — KYC valid hona chahiye kisi bhi holding change se pehle, chahe client 10 saal se juda ho ya 10 din se. Main isse override nahi kar sakta.\n\n**Current status:**\n- Client: Rohit Pahwa (C008)\n- KYC: Expired (valid_till: 2026-10-31)\n- Block: KYC_EXPIRED\n\n**Action required:** Pehle client ka KYC renew/update karwayein. Jab KYC valid ho jayegi, tab main SAT-FLX se SAT-BLU mein 500 units ke switch ke liye full impact check (exit load, tax, lock-in, suitability, daily limit, NAV cut-off) aur confirmation code lekar aage badh paunga.\n\nKYC renewal ke liye aap client se contact kar lein, aur jab valid ho jaye toh mujhe batayein."
     }
   ],
   "tool_calls": 2,
-  "prompt_tokens": 10955,
-  "completion_tokens": 1098,
-  "latency_ms": 5894,
+  "prompt_tokens": 11141,
+  "completion_tokens": 1201,
+  "latency_ms": 6103,
   "tools": [
     "get_client_profile",
     "verify_kyc",
@@ -103,5 +103,5 @@
     "reasoning_max_tokens": 1024,
     "max_tool_calls": 15
   },
-  "cost_usd": 0.002159
+  "cost_usd": 0.002236
 }

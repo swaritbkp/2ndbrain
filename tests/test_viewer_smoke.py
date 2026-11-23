@@ -101,3 +101,30 @@ def test_deep_link_selects_case_and_run():
     at.run()
     assert not at.exception
     assert at.selectbox[0].value == "N04" and at.selectbox[1].value == 1
+
+
+def test_kpis_and_why_from_results():
+    fx = next(v for k, v in D.sources().items() if "synthetic" in k)
+    k = D.kpis(fx)
+    assert k and "/" in k["attack"][0] and "/" in k["controls"][1]
+    for r in D.load_runs(fx):
+        assert D.why(r)
+
+
+def test_tamper_targets_chosen_row(monkeypatch):
+    monkeypatch.setenv("REKHA_TOKEN_SECRET", "test-secret")
+    db = D.demo_db()
+    first = D.audit_rows(db)[0]["id"]
+    tdb, edited = D.tamper_copy(db, first)
+    assert edited == first and verify_audit_chain(tdb)["broken_at_id"] == first
+
+
+@pytest.mark.parametrize("case", ["N04", "K01", "K02"])
+def test_deep_links_for_demo_cases(case):
+    from streamlit.testing.v1 import AppTest
+    if "results/latest" not in D.sources():
+        pytest.skip("results/latest not present")
+    at = AppTest.from_file(str(ROOT / "src/rekha/viewer/app.py"), default_timeout=60)
+    at.query_params.update({"source": "results/latest", "page": "Arena replay", "case": case, "run": "1"})
+    at.run()
+    assert not at.exception and at.selectbox[0].value == case

@@ -11,3 +11,17 @@ where = ["src"]
 pythonpath = ["src", "data", "tests"]
 testpaths = ["tests"]
 timeout = 300
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+# Synapse-generated servers are provenance-pinned (state/build_manifest.json) and never hand-edited.
+extend-exclude = ["*_server.py", "*_server_*.py", "archive", "logs", "results", ".venv"]
+
+[tool.ruff.lint]
+select = ["E9", "F", "B006", "B008"]
+
+[tool.ruff.lint.per-file-ignores]
+# Pre-built pack files kept byte-identical (CLAUDE.md: don't rewrite the engine; never touch existing tests).
+"src/rekha/engine/functions.py" = ["F401"]
+"tests/conftest.py" = ["F401"]

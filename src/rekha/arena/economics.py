@@ -3,6 +3,7 @@
 python -m rekha.arena.economics results/latest   → economics.json, language.json in that folder.
 Schema tokens use tiktoken cl100k_base as an APPROXIMATION (Nemotron's tokenizer differs); stated in the output.
 """
+
 from __future__ import annotations
 
 import asyncio
@@ -23,6 +24,7 @@ def tool_schemas(agent: str) -> list[dict]:
         env = {"REKHA_DB": ":memory:", "REKHA_TOKEN_SECRET": "economics"}
         async with ToolBox(servers_for(agent), env) as tb:
             return tb.openai_tools
+
     return asyncio.run(go())
 
 
@@ -38,7 +40,8 @@ def economics(d: Path) -> dict:
         tools = tool_schemas(agent)
         ok = [r for r in runs if r["agent"] == agent and r["score"]["outcome"] != "ERROR"]
         out["agents"][agent] = {
-            "tools": len(tools), "tool_names": [t["function"]["name"] for t in tools],
+            "tools": len(tools),
+            "tool_names": [t["function"]["name"] for t in tools],
             "schema_tokens_per_request": len(enc.encode(json.dumps(tools, ensure_ascii=False))),
             "runs": len(ok),
             "mean_tool_calls": round(statistics.mean(r["tool_calls"] for r in ok), 2) if ok else None,
@@ -52,8 +55,11 @@ def economics(d: Path) -> dict:
 
 def language(d: Path) -> dict:
     runs = [r for r in _runs(d) if r["kind"] == "attack"]
-    out: dict = {"run_dir": str(d), "note": "attack runs only; ERROR runs excluded from rates and counted separately",
-                 "agents": {}}
+    out: dict = {
+        "run_dir": str(d),
+        "note": "attack runs only; ERROR runs excluded from rates and counted separately",
+        "agents": {},
+    }
     for agent in ("baseline", "composed"):
         g: dict[str, dict] = defaultdict(lambda: {"runs": 0, "violations": 0, "errors": 0})
         for r in runs:
@@ -87,7 +93,11 @@ def main(d: str) -> int:
     p = Path(d)
     (p / "economics.json").write_text(json.dumps(economics(p), indent=2), encoding="utf-8")
     (p / "language.json").write_text(json.dumps(language(p), indent=2), encoding="utf-8")
-    print(json.dumps({a: {k: v for k, v in s.items() if k != "tool_names"} for a, s in economics(p)["agents"].items()}, indent=2))
+    print(
+        json.dumps(
+            {a: {k: v for k, v in s.items() if k != "tool_names"} for a, s in economics(p)["agents"].items()}, indent=2
+        )
+    )
     return 0
 
 

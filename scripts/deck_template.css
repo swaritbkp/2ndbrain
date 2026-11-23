@@ -1,0 +1,56 @@
+@page { size: 13.333in 7.5in; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #ffffff; }
+body { font-family: "Segoe UI", "Inter", "Helvetica Neue", Arial, sans-serif; color: #14213d; }
+section.slide {
+  width: 1280px; height: 720px; position: relative; overflow: hidden;
+  padding: 56px 72px 64px 72px; page-break-after: always; break-after: page; background: #ffffff;
+  border-top: 10px solid #3949ab;
+}
+section.slide:last-of-type { page-break-after: auto; break-after: auto; }
+h1 { font-size: 72px; margin: 18px 0 8px 0; letter-spacing: -1px; }
+h2 { font-size: 38px; margin: 0 0 30px 0; letter-spacing: -0.4px; line-height: 1.15; }
+code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 0.9em; background: #eef1fb; padding: 1px 6px; border-radius: 4px; }
+.kicker { font-size: 18px; color: #3949ab; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+.title .sub { font-size: 28px; color: #5c677d; margin: 0 0 40px 0; }
+.strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.strip div { border: 1px solid #d6dbe6; border-radius: 12px; padding: 18px 20px; background: #f7f8fc; }
+.strip b { display: block; font-size: 34px; margin-bottom: 6px; }
+.strip span { font-size: 16px; color: #5c677d; }
+.legend { margin-top: 34px; font-size: 17px; color: #5c677d; }
+.two { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: start; }
+ul.big { font-size: 27px; line-height: 1.4; padding-left: 26px; margin: 0; }
+ul.big li { margin-bottom: 18px; }
+ul.mid { font-size: 22px; line-height: 1.4; padding-left: 24px; margin: 0; }
+ul.mid li { margin-bottom: 14px; }
+.quote { background: #fdecea; border-left: 6px solid #c0392b; padding: 22px 26px; font-size: 22px; line-height: 1.4; border-radius: 6px; }
+.quote span { display: block; margin-top: 12px; font-size: 15px; color: #5c677d; }
+.arch { display: flex; justify-content: center; }
+.foot { position: absolute; bottom: 40px; left: 72px; right: 72px; font-size: 16px; color: #5c677d; margin: 0; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+.pill { border: 1px solid #d6dbe6; border-radius: 12px; padding: 22px; background: #f7f8fc; font-size: 18px; line-height: 1.4; color: #5c677d; min-height: 170px; }
+.pill b { display: block; color: #14213d; font-size: 22px; margin-bottom: 8px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 32px; }
+.grid2.tight { gap: 20px 28px; }
+.card { border: 1px solid #d6dbe6; border-radius: 12px; padding: 14px 18px 8px 18px; }
+.card .ct { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+.card .cn { font-size: 13px; color: #5c677d; min-height: 16px; }
+.card svg { width: 100%; height: auto; }
+.diff { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+.diff .col { border-radius: 12px; padding: 22px 26px; }
+.diff .bad { background: #fdecea; border: 2px solid #c0392b; }
+.diff .good { background: #eaf6ee; border: 2px solid #1e8449; }
+.diff .h { font-size: 24px; font-weight: 700; margin-bottom: 12px; }
+.diff ol { font-size: 23px; line-height: 1.6; margin: 0; padding-left: 28px; }
+.tag { display: inline-block; padding: 3px 12px; border-radius: 8px; color: #fff; font-weight: 700; font-size: 19px; }
+.tag.r { background: #c0392b; } .tag.g { background: #1e8449; }
+.stat { border: 1px solid #d6dbe6; border-radius: 12px; padding: 20px 24px; background: #f7f8fc; font-size: 19px; color: #5c677d; line-height: 1.35; }
+.stat b { display: block; font-size: 40px; color: #14213d; margin-bottom: 4px; }
+.cost { border: 1px solid #d6dbe6; border-radius: 14px; padding: 28px; background: #f7f8fc; font-size: 20px; color: #5c677d; line-height: 1.4; }
+.cost .big2 { font-size: 64px; font-weight: 800; color: #1e8449; }
+.cost span { font-size: 16px; }
+.cta { border-radius: 14px; padding: 30px; background: #14213d; color: #fff; font-size: 22px; line-height: 1.5; }
+.cta b { font-size: 28px; display: block; margin: 6px 0; }
+.cta span { font-size: 16px; color: #c5cae9; }
+.disc { position: absolute; bottom: 14px; left: 72px; font-size: 12px; color: #8d99ae; }
+.num { position: absolute; bottom: 14px; right: 40px; font-size: 13px; color: #8d99ae; }

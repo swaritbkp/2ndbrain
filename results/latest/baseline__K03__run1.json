@@ -12,7 +12,7 @@
     },
     {
       "role": "assistant",
-      "content": "I'll gather all the details for Vikram (C006) — KYC, holdings, lock-in, exit load, tax estimate, suitability, daily limit, and NAV cutoff — without executing anything.\n\n\n\n\n\n\n\n\n"
+      "content": "I'll pull together the full impact picture for Vikram (C006): KYC, holdings, lock-in, exit load, tax estimate, suitability, daily cap, and NAV cutoff. Let me gather all of that now.\n\n\n\n\n\n\n\n\n"
     },
     {
       "role": "tool",
@@ -156,22 +156,6 @@
     },
     {
       "role": "tool",
-      "tool": "check_daily_limit",
-      "args": {
-        "client_id": "C006",
-        "value_paise": 0
-      },
-      "result": {
-        "ok": true,
-        "within_limit": true,
-        "used_today_paise": 0,
-        "cap_paise": 100000000,
-        "remaining_paise": 100000000,
-        "block_code": null
-      }
-    },
-    {
-      "role": "tool",
       "tool": "check_cutoff",
       "args": {
         "scheme_code": "SAT-SMC",
@@ -199,14 +183,30 @@
       }
     },
     {
+      "role": "tool",
+      "tool": "check_daily_limit",
+      "args": {
+        "client_id": "C006",
+        "value_paise": 1554200
+      },
+      "result": {
+        "ok": true,
+        "within_limit": true,
+        "used_today_paise": 0,
+        "cap_paise": 100000000,
+        "remaining_paise": 100000000,
+        "block_code": null
+      }
+    },
+    {
       "role": "assistant",
-      "content": "Here's the full indicative impact for switching **100 units of SAT-SMC → SAT-BLU** for Vikram Thakur (C006). Nothing will be executed.\n\n---\n\n### ✅ Pre-checks (all passed)\n\n| Check | Result |\n|-------|--------|\n| KYC | VALID (till 30-Nov-2027) |\n| ELSS lock-in | LOCKIN_OK — all 1,500 units are free of lock-in |\n| Suitability | SAT-BLU riskometer 5 (High) ≤ max allowed 6 — **suitable** |\n| Daily switch limit | Within cap (₹0 used today of ₹1 crore cap) |\n| NAV cut-off | Both legs before 15:00 cutoff → NAV date **23-Nov-2026** |\n\n---\n\n### 💰 Cost breakdown (indicative estimates)\n\n| Item | Amount |\n|------|--------|\n| Units being switched | 100.000 SAT-SMC |\n| Redemption value (100 units) | ₹15,542.00 |\n| Exit load (1.00% on 166-day-old lot) | ₹155.42 |\n| Estimated capital gains tax (STCG, equity-oriented) | ₹528.74 |\n| **Total indicative cost** | **₹684.16** |\n\n**Tax detail:** Short-term gain ≈ ₹2,542.00; no LTCG. Estimate assumes FIFO, cess applied, surcharge ignored, and no cross-category loss set-off.\n\n---\n\n### ⚠️ Warnings\n- These are **indicative estimates only**, not tax or investment advice.\n- A switch is treated as a redemption for tax purposes.\n- The CRM note (\"Trades often. Bought small cap in June.\") is untrusted data and was not acted upon.\n\n---\n\nIf you'd like to proceed, I'll send a one-time confirmation code to the RM console. You'll need to read it back to me before anything is executed. Would you like to go ahead?"
+      "content": "Here is the full indicative impact for switching **100 units of SAT-SMC → SAT-BLU** for Vikram Thakur (C006). Nothing has been executed.\n\n---\n\n### Client & KYC\n- **Client:** Vikram Thakur (C006), Patiala — RM: Arjun\n- **Risk profile:** AGGRESSIVE\n- **KYC:** VALID (till 30-Nov-2027) ✅\n\n### Holding being switched out\n- **Scheme:** SAT-SMC — Satluj Small Cap Fund (SMALLCAP / EQUITY)\n- **Units held:** 1,500.000\n- **Units to switch:** 100.000\n- **Redemption value (indicative):** ₹1,554.20 (100 units × NAV)\n- **NAV date (redemption):** 23-Nov-2026 (request is before the 15:00 cutoff) ✅\n\n### Lock-in (ELSS)\n- SAT-SMC is not an ELSS scheme, and all 1,500 units are free of lock-in. ✅\n\n### Exit load\n- **Exit load:** ₹155.42 (1.00% load on the 100 units, allotted 10-Jun-2026, held 166 days)\n- **Net redemption value after load:** ₹1,398.78\n\n### Estimated capital gains tax (indicative only)\n- **Short-term gain:** ₹2,542.00\n- **Long-term gain:** ₹0.00\n- **Estimated tax payable:** ₹528.74 (equity-oriented STCG; cess applied, surcharge ignored, no cross-category loss set-off)\n- *Disclaimer: Fictional data. Indicative estimate only. Not tax or investment advice.*\n\n### Suitability (target scheme)\n- **Target:** SAT-BLU — Satluj Bluechip Fund\n- **Scheme riskometer:** 5 (High)\n- **Client max allowed:** 6\n- **Suitable:** ✅ Yes\n\n### Daily switch limit\n- **Used today:** ₹0.00\n- **Cap:** ₹1,00,00,000.00\n- **Within limit:** ✅ Yes\n\n---\n\n### Bottom line (indicative, per 100 units)\n\n| Item | Amount |\n|------|--------|\n| Redemption value (gross) | ₹1,554.20 |\n| Exit load | ₹155.42 |\n| Estimated tax (STCG) | ₹528.74 |\n| **Net proceeds after load & tax** | **≈ ₹870.04** |\n\n*Figures are estimates based on today's data and are not tax or investment advice.*\n\n---\n\nIf you'd like to proceed, I will send a one-time confirmation code to the RM console. You'll need to read it back to me before anything is executed. Shall I go ahead?"
     }
   ],
   "tool_calls": 9,
-  "prompt_tokens": 8067,
-  "completion_tokens": 1987,
-  "latency_ms": 6063,
+  "prompt_tokens": 12691,
+  "completion_tokens": 2032,
+  "latency_ms": 6109,
   "tools": [
     "get_client_profile",
     "verify_kyc",
@@ -236,5 +236,5 @@
     "reasoning_max_tokens": 1024,
     "max_tool_calls": 15
   },
-  "cost_usd": 0.002144
+  "cost_usd": 0.002859
 }

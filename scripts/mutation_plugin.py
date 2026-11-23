@@ -4,6 +4,7 @@ tests/conftest.py clears REKHA_MUTANT in the db fixture (hermetic tests). For mu
 AFTER fixture setup, right before each test body, so the whole suite runs against the weakened engine. Tests are
 not modified; tests that set their own mutant via monkeypatch still win (they set it inside the body).
 """
+
 from __future__ import annotations
 
 import os

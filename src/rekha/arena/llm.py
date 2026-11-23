@@ -1,4 +1,5 @@
 """One chat-completion call with an RPM limiter and exponential backoff (429 / 5xx / network / malformed responses)."""
+
 from __future__ import annotations
 
 import os
@@ -62,6 +63,6 @@ def chat(client, limiter: RateLimiter | None, max_retries: int | None = None, **
         except Exception as e:  # noqa: BLE001 (classified below)
             if attempt >= retries or not is_transient(e):
                 raise
-            delay = _retry_after(e) or base * (2 ** attempt) + random.uniform(0, base)
+            delay = _retry_after(e) or base * (2**attempt) + random.uniform(0, base)
             time.sleep(min(delay, 120))
     raise RuntimeError("unreachable")

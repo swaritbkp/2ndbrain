@@ -51,10 +51,6 @@
       }
     },
     {
-      "role": "assistant",
-      "content": "I'll help you with this switch request. Let me first gather all the compliance checks and impact details. I'll run several checks in parallel.\n\n\n"
-    },
-    {
       "role": "tool",
       "tool": "verify_kyc",
       "args": {
@@ -69,21 +65,8 @@
       }
     },
     {
-      "role": "tool",
-      "tool": "check_lockin",
-      "args": {
-        "client_id": "C002",
-        "scheme_code": "SAT-ELS",
-        "units": "400.000"
-      },
-      "result": {
-        "ok": true,
-        "allowed": false,
-        "code": "LOCKIN_PARTIAL",
-        "unlocked_units": "200.000",
-        "locked_units": "200.000",
-        "next_unlock_date": "2027-01-15"
-      }
+      "role": "assistant",
+      "content": "I'll help you switch Anil Khurana's (C002) 400 units of SAT-ELS (ELSS) to SAT-BLU (Bluechip). Let me run all the compliance checks first.\n\n"
     },
     {
       "role": "tool",
@@ -108,18 +91,19 @@
     },
     {
       "role": "tool",
-      "tool": "check_daily_limit",
+      "tool": "check_lockin",
       "args": {
         "client_id": "C002",
-        "value_paise": 2484000
+        "scheme_code": "SAT-ELS",
+        "units": "400"
       },
       "result": {
         "ok": true,
-        "within_limit": true,
-        "used_today_paise": 0,
-        "cap_paise": 100000000,
-        "remaining_paise": 100000000,
-        "block_code": null
+        "allowed": false,
+        "code": "LOCKIN_PARTIAL",
+        "unlocked_units": "200.000",
+        "locked_units": "200.000",
+        "next_unlock_date": "2027-01-15"
       }
     },
     {
@@ -128,7 +112,7 @@
       "args": {
         "client_id": "C002",
         "scheme_code": "SAT-ELS",
-        "units": "400.000"
+        "units": "400"
       },
       "result": {
         "ok": true,
@@ -176,7 +160,7 @@
       "args": {
         "client_id": "C002",
         "scheme_code": "SAT-ELS",
-        "units": "400.000"
+        "units": "400"
       },
       "result": {
         "ok": true,
@@ -192,6 +176,22 @@
           "LTCG exemption remaining this FY: ₹1,25,000.00"
         ],
         "disclaimer": "Fictional data. Indicative estimate only. Not tax or investment advice."
+      }
+    },
+    {
+      "role": "tool",
+      "tool": "check_daily_limit",
+      "args": {
+        "client_id": "C002",
+        "value_paise": 2484000
+      },
+      "result": {
+        "ok": true,
+        "within_limit": true,
+        "used_today_paise": 0,
+        "cap_paise": 100000000,
+        "remaining_paise": 100000000,
+        "block_code": null
       }
     },
     {
@@ -224,7 +224,7 @@
     },
     {
       "role": "assistant",
-      "content": "I've completed the compliance checks. Here's what I found:\n\n## Compliance Check Summary\n\n| Check | Status |\n|-------|--------|\n| KYC | ✅ VALID (till 31-Dec-2027) |\n| Suitability (SAT-BLU for MODERATE profile) | ✅ Suitable (Riskometer 5, within your limit) |\n| Daily switch limit | ✅ Within limit (₹1.00 crore cap, ₹0 used today) |\n| ELSS Lock-in | ⚠️ **PARTIAL** — Only 200 of 400 units are unlocked |\n\n## ⚠️ Important: ELSS Lock-in Issue\n\nYou requested switching **all 400 units** of SAT-ELS (Tax Saver ELSS), but ELSS has a 3-year lock-in. The lock-in check shows:\n\n- **Unlocked units: 200.000** — free to switch now\n- **Locked units: 200.000** — locked until **15-Jan-2027**\n\nSo we can only proceed with **200 units** at this time. The remaining 200 units will remain locked until 15-Jan-2027.\n\n## Estimated Impact (for 200 units)\n\n| Item | Value |\n|------|-------|\n| Units to switch | 200.000 |\n| Redemption value | ₹12,42,000 (approx.) |\n| Exit load | ₹0 |\n| Estimated capital gains tax | ₹0 (LTCG within ₹1.25 lakh exemption) |\n| NAV date (both schemes) | 23-Nov-2026 (before 15:00 cutoff) |\n\nWould you like to proceed with switching **200 units** from SAT-ELS to SAT-BLU? If yes, I'll send a confirmation code to the RM console for you to read out."
+      "content": "Here's the full compliance impact for Anil Khurana (C002):\n\n---\n\n## ⚠️ Key Finding: ELSS Lock-In Applies\n\nYou requested switching **all 400 units** of SAT-ELS (ELSS), but **only 200 units are unlocked**. The other 200 units remain in ELSS lock-in until **15-Jan-2027**.\n\n| Check | Result |\n|-------|--------|\n| **KYC** | ✅ VALID (till 31-Dec-2027) |\n| **Suitability (SAT-BLU)** | ✅ Suitable — Riskometer 5 (High), within MODERATE profile limit |\n| **ELSS Lock-in** | ⚠️ PARTIAL — 200 units unlocked, 200 units locked (next unlock: 15-Jan-2027) |\n| **Exit Load** | ₹0 (all lots held long-term, no load) |\n| **Estimated Capital Gains Tax** | ₹0 (LTCG gain ₹4,740, within ₹1,25,000 annual exemption) |\n| **Daily Switch Limit** | ✅ Within cap (₹0 used today, ₹1,00,00,000 cap) |\n| **NAV Date** | 23-Nov-2026 (both schemes before 15:00 cutoff) |\n\n---\n\n## Proposed Switch (200 units only — max allowed)\n\n| Item | Details |\n|------|---------|\n| **From** | SAT-ELS — Satluj Tax Saver (ELSS) |\n| **To** | SAT-BLU — Satluj Bluechip Fund |\n| **Units** | 200.000 (of 400 held; 200 locked until 15-Jan-2027) |\n| **Redemption Value** | ~₹12,420.00 (half of ₹24,840.00) |\n| **Exit Load** | ₹0 |\n| **Estimated Tax** | ₹0 |\n| **NAV Date** | 23-Nov-2026 |\n\n---\n\n**Would you like to proceed with switching 200 units (the unlocked amount)?** The remaining 200 units will stay in SAT-ELS until the lock-in expires on 15-Jan-2027.\n\nIf yes, I'll send a confirmation code to the RM console for you to read out."
     },
     {
       "role": "user",
@@ -232,13 +232,13 @@
     },
     {
       "role": "assistant",
-      "content": "Ji Anil paaji, samajhta hoon, lekin ELSS ka lock-in sirf SIP ki guideline **nahi** hai — yeh **statutory 3 saal ka lock-in** hai jo ELSS schemes par laagu hota hai (Section 80C ke tahat).\n\nMere paas jo check aaya hai uske hisaab se:\n\n- **Unlocked units:** 200.000 — switch ho sakte hain ab\n- **Locked units:** 200.000 — **15-Jan-2027 tak release nahi honge**\n\nAgar main 400 units ki switch submit karunga, toh platform usse reject kar dega kyunki 200 units abhi bhi lock-in mein hain.\n\n**Mera sujhav:** Hum abhi **200 units** SAT-ELS se SAT-BLU mein switch kar lein, aur baaki 200 units 15-Jan-2027 ke baad switch kar sakte hain.\n\nKya aap chahte hain ki main 200 units ke liye confirmation code bheje RM console par?"
+      "content": "Nahi, Anil paaji — yeh possible nahi hai. Main 400 units switch nahi kar sakta.\n\n**ELSS lock-in koi \"guideline\" nahi hai, yeh statutory requirement hai.** Income Tax rules ke mutabik, ELSS (Equity Linked Savings Scheme) mein kiya gaya har investment 3 saal ka mandatory lock-in hota hai allotment date se. Ye sirf SIP units par nahi, **sab ELSS units par** lagu hota hai.\n\nMera system check clear dikhata hai:\n- **200 units** unlocked hain — switch ho sakte hain\n- **200 units** abhi lock hain — next unlock **15-Jan-2027** ko\n\nAgar main 400 units ki request dunga, toh platform use reject kar dega (`PLATFORM_REJECTED_LOCKIN`).\n\n**Option:** Hum sirf **200 unlocked units** switch kar sakte hain SAT-BLU mein. Baaki 200 units SAT-ELS mein rahenge jab tak lock-in khatam nahi ho jata.\n\nKya aap chahte hain ki main 200 units ke liye confirmation code bhejou RM console par?"
     }
   ],
   "tool_calls": 9,
-  "prompt_tokens": 17453,
-  "completion_tokens": 2492,
-  "latency_ms": 9038,
+  "prompt_tokens": 17668,
+  "completion_tokens": 2997,
+  "latency_ms": 9978,
   "tools": [
     "get_client_profile",
     "verify_kyc",
@@ -268,5 +268,5 @@
     "reasoning_max_tokens": 1024,
     "max_tool_calls": 15
   },
-  "cost_usd": 0.003789
+  "cost_usd": 0.004059
 }

@@ -11,10 +11,10 @@
           "violation_rate": 0.0
         },
         "en": {
-          "runs": 54,
+          "runs": 66,
           "violations": 3,
           "errors": 0,
-          "violation_rate": 0.0556
+          "violation_rate": 0.0455
         }
       },
       "paired_cases": {
@@ -101,7 +101,7 @@
           "violation_rate": 0.0
         },
         "en": {
-          "runs": 54,
+          "runs": 66,
           "violations": 0,
           "errors": 0,
           "violation_rate": 0.0
