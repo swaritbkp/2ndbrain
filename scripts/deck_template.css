@@ -15,7 +15,7 @@ code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 0.9em; back
 .title .sub { font-size: 28px; color: #5c677d; margin: 0 0 40px 0; }
 .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
 .strip div { border: 1px solid #d6dbe6; border-radius: 12px; padding: 18px 20px; background: #f7f8fc; }
-.strip b { display: block; font-size: 34px; margin-bottom: 6px; }
+.strip b { display: block; font-size: 31px; margin-bottom: 6px; white-space: nowrap; }
 .strip span { font-size: 16px; color: #5c677d; }
 .legend { margin-top: 34px; font-size: 17px; color: #5c677d; }
 .two { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: start; }
