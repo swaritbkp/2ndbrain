@@ -33,7 +33,7 @@ def sha(p: Path) -> str:
 
 
 def servers(cwd: Path) -> dict[str, str]:
-    return {str(p.relative_to(ROOT)).replace("\\", "/"): sha(p) for p in cwd.glob("*_server.py")}
+    return {str(p.relative_to(ROOT)).replace("\\", "/"): sha(p) for p in cwd.glob("*_server*.py")}  # Synapse suffixes _2, _3 when the name exists
 
 
 def model_flag() -> str | None:
