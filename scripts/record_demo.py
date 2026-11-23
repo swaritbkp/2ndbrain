@@ -143,7 +143,7 @@ def scenes(f: dict) -> list[dict]:
                 f"Mutants: unit {f['unit_mut']} · OTP-assisted arena {f['otp_mut']} · spend ${f['usd']:.2f}",
             ],
             "shots": [
-                ("app", "?source=results/latest&page=Scorecard", "scroll_short"),
+                ("app", "?source=results/latest&page=Scorecard", "hold"),
                 ("app", "?source=results/latest&page=Extras", "scroll_short"),
                 ("card", "close"),
             ],
@@ -156,7 +156,7 @@ background:#fff;border-top:16px solid #3949ab;box-sizing:border-box;padding:110p
 h1{font-size:110px;margin:20px 0 10px}.k{font-size:30px;color:#3949ab;font-weight:700;letter-spacing:.08em}
 p{font-size:44px;color:#5c677d;line-height:1.35;margin:20px 0}.strip{display:flex;gap:28px;margin-top:60px}
 .strip div{flex:1;border:2px solid #d6dbe6;border-radius:18px;padding:26px;background:#f7f8fc;font-size:26px;color:#5c677d}
-.strip b{display:block;font-size:52px;color:#14213d}pre{font-family:'Cascadia Mono',Consolas,monospace;font-size:27px;
+.strip b{display:block;font-size:50px;white-space:nowrap;color:#14213d}pre{font-family:'Cascadia Mono',Consolas,monospace;font-size:27px;
 background:#f7f8fc;border:2px solid #d6dbe6;border-radius:14px;padding:26px 30px;line-height:1.45;margin:0 0 26px}
 .g{color:#1e8449;font-weight:700}.r{color:#c0392b;font-weight:700}h2{font-size:60px;margin:0 0 30px}"""
 
@@ -166,8 +166,8 @@ def card_html(kind: str, f: dict) -> str:
         body = (
             f"<div class='k'>2nd Brain Labs × Geek Room · Track 2 · Synapse CLI 0.1.9</div><h1>Lakshman Rekha</h1>"
             f"<p>2:55 PM. Cut-off at 3:00. “No time for the code. Just switch it.”</p><div class='strip'>"
-            f"<div><b>{f['b_att']} → {f['c_att']}</b>unsafe commits (attack runs)</div>"
-            f"<div><b>{f['b_ctl']} → {f['c_ctl']}</b>legitimate switches</div>"
+            f"<div><b>{f['b_att'].replace(' of ', '/')} → {f['c_att'].replace(' of ', '/')}</b>unsafe commits (attack runs)</div>"
+            f"<div><b>{f['b_ctl'].replace(' of ', '/')} → {f['c_ctl'].replace(' of ', '/')}</b>legitimate switches</div>"
             f"<div><b>{f['calls'][0]} → {f['calls'][1]}</b>tool calls per run</div></div>"
         )
     elif kind == "code":
@@ -181,12 +181,11 @@ def card_html(kind: str, f: dict) -> str:
         ):
             for ln in (ROOT / srv).read_text(encoding="utf-8").splitlines():
                 if ln.startswith("def "):
-                    tools.append(html.escape(ln[4:].split(")")[0] + ")"))
+                    sig = ln[4:].split(")")[0].replace(": str", "") + ")"
+                    tools.append(html.escape(sig))
         body = (
             "<h2>12 functions → 3 Synapse-generated tools</h2><pre># src/rekha/engine/functions.py\n"
-            + html.escape(", ".join(names[:6]))
-            + ",\n"
-            + html.escape(", ".join(names[6:]))
+            + ",\n".join(html.escape(", ".join(names[k : k + 4])) for k in range(0, len(names), 4))
             + "</pre><pre># synapse build --local --custom  (Route B + read-only lookup)\n"
             + "\n".join(f"<span class='g'>✓</span> {t}" for t in tools)
             + "\n<span class='r'>✗ execute_switch, verify_confirmation, request_confirmation: not exposed</span></pre>"
@@ -194,7 +193,8 @@ def card_html(kind: str, f: dict) -> str:
     else:
         body = (
             f"<div class='k'>Reproduce it</div><h1 style='font-size:84px'>{REPO}</h1>"
-            "<p>pytest -q · streamlit run src/rekha/viewer/app.py · scripts/check_numbers.py --rescore</p>"
+            "<p style='font-size:32px'>pytest -q · streamlit run src/rekha/viewer/app.py<br>"
+            "python scripts/check_numbers.py --rescore</p>"
             "<p style='font-size:30px'>Fictional data. Indicative estimate only. Not tax or investment advice.</p>"
         )
     return (
@@ -228,7 +228,7 @@ def stamp(png: Path, chapter: str, caption: str) -> None:
 async def tts(text: str, path: Path, voice: str) -> None:
     import edge_tts
 
-    await edge_tts.Communicate(text, voice, rate="-4%").save(str(path))
+    await edge_tts.Communicate(text, voice, rate="-10%").save(str(path))
 
 
 def duration(path: Path) -> float:
@@ -247,8 +247,13 @@ class Recorder:
         self.frames: list[tuple[Path, float]] = []
         self.t = 0.0
 
+    shot = 0
+    shots = 1
+
     def caption(self) -> str:
-        i = min(int(self.t / max(self.seconds, 1e-6) * len(self.captions)), len(self.captions) - 1)
+        if len(self.captions) == self.shots:  # one caption per shot: never drift from what is on screen
+            return self.captions[self.shot]
+        i = min(int(self.t / max(self.seconds, 1e-6) * len(self.captions) + 1e-6), len(self.captions) - 1)
         return self.captions[i]
 
     def grab(self, hold: float) -> None:
@@ -298,6 +303,9 @@ def run_shot(page, rec: Recorder, shot: tuple, budget: float, f: dict) -> None:
         time.sleep(0.5)
         rec.grab(budget * 0.4)
         return
+    if mode == "hold":
+        rec.grab(budget)
+        return
     rec.grab(budget * 0.3)
     rec.scroll(1600 if mode == "scroll" else 700, budget * 0.55)
     rec.grab(budget * 0.15)
@@ -331,6 +339,8 @@ def main() -> int:
             "127.0.0.1",
             "--browser.gatherUsageStats",
             "false",
+            "--client.toolbarMode",
+            "minimal",
             "--theme.base",
             "light",
         ],
@@ -340,6 +350,11 @@ def main() -> int:
         stderr=subprocess.DEVNULL,
     )
     concat, audio_list, report = [], [], []
+    # Narration first: Playwright's sync API owns an event loop, so asyncio.run can't run inside it.
+    for i, s in enumerate(sc):
+        d = WORK / f"scene{i + 1}"
+        d.mkdir()
+        asyncio.run(tts(s["say"], d / "say.mp3", a.voice))
     try:
         time.sleep(6)
         with sync_playwright() as p:
@@ -347,13 +362,13 @@ def main() -> int:
             page = br.new_page(viewport={"width": W, "height": H})
             for i, s in enumerate(sc):
                 d = WORK / f"scene{i + 1}"
-                d.mkdir()
                 mp3 = d / "say.mp3"
-                asyncio.run(tts(s["say"], mp3, a.voice))
                 secs = duration(mp3) + 0.6
                 rec = Recorder(page, d, s["chapter"], s["captions"], secs)
                 per = secs / len(s["shots"])
-                for shot in s["shots"]:
+                rec.shots = len(s["shots"])
+                for k, shot in enumerate(s["shots"]):
+                    rec.shot = k
                     run_shot(page, rec, shot, per, f)
                 scale = secs / rec.t
                 for png, hold in rec.frames:

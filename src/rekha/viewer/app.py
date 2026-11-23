@@ -213,7 +213,7 @@ elif page == "Audit & receipts":
         with right:
             st.subheader("Tamper demo")
             st.caption("Edits one row's detail on a temporary copy, then recomputes every SHA-256 link.")
-            target = st.selectbox("Row to tamper", [r["id"] for r in rows], index=0, key="tamper_row")
+            target = st.selectbox("Row to tamper", [r["id"] for r in rows], index=len(rows) // 2, key="tamper_row")
             if st.button("Tamper with this row", type="primary"):
                 tdb, edited = D.tamper_copy(db, target)
                 res = verify_audit_chain(tdb)
@@ -227,10 +227,13 @@ elif page == "Audit & receipts":
                 st.write(f"Edited row {edited}; rows before it still verify ({res.get('rows_checked', 0)} checked).")
                 st.dataframe(
                     [
-                        dict(
-                            r,
-                            status="tampered" if r["id"] == edited else ("ok" if r["id"] < edited else "unverifiable"),
-                        )
+                        {
+                            "id": r["id"],
+                            "action": r["action"],
+                            "status": "tampered"
+                            if r["id"] == edited
+                            else ("verifies" if r["id"] < edited else "after break: unverifiable"),
+                        }
                         for r in D.audit_rows(tdb)
                     ],
                     use_container_width=True,
