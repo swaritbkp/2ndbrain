@@ -19,7 +19,7 @@
       "tool": "request_confirmation",
       "result": {
         "ok": true,
-        "confirmation_id": "CNF-5392FFDB0EFC",
+        "confirmation_id": "CNF-E94A690094A7",
         "expires_at": "2026-11-23T15:05:00+05:30",
         "delivered_to": "RM console (out-of-band; never returned by any tool)",
         "instruction": "Ask the user to read the 6-digit code from the RM console. Do not guess it."

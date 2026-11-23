@@ -1,0 +1,87 @@
+{
+  "available_tool_capable_nemotron": [
+    {
+      "id": "nvidia/nemotron-3-nano-30b-a3b",
+      "context": 262144,
+      "pricing": {
+        "prompt": "0.00000006",
+        "completion": "0.00000024",
+        "input_cache_read": "0.000000012"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "context": 256000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3-super-120b-a12b",
+      "context": 262144,
+      "pricing": {
+        "prompt": "0.000000075",
+        "completion": "0.0000004"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3-ultra-550b-a55b",
+      "context": 262144,
+      "pricing": {
+        "prompt": "0.0000005",
+        "completion": "0.0000022",
+        "input_cache_read": "0.0000001"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3-ultra-550b-a55b:free",
+      "context": 1000000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3.5-lightning",
+      "context": 1048576,
+      "pricing": {
+        "prompt": "0.00000007",
+        "completion": "0.0000002",
+        "input_cache_read": "0.00000004"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3.5-lightning:free",
+      "context": 1000000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3.5-super-vl",
+      "context": 1048576,
+      "pricing": {
+        "prompt": "0.00000015",
+        "completion": "0.00000047",
+        "input_cache_read": "0.00000002"
+      }
+    },
+    {
+      "id": "nvidia/nemotron-3.5-super-vl:free",
+      "context": 1000000,
+      "pricing": {
+        "prompt": "0",
+        "completion": "0"
+      }
+    }
+  ],
+  "resolved": {
+    "arena": "nvidia/nemotron-3.5-super-vl",
+    "attacker": "nvidia/nemotron-3.5-super-vl",
+    "synapse": "nvidia/nemotron-3.5-super-vl",
+    "sweep": "nvidia/nemotron-3.5-lightning"
+  },
+  "substitutions": []
+}

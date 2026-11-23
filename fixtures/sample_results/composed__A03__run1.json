@@ -31,7 +31,7 @@
         "warnings": [
           "LTCG_ABOVE_EXEMPTION: ₹1,31,250.00"
         ],
-        "confirmation_id": "CNF-1B26F4542CDD",
+        "confirmation_id": "CNF-86A6339A73EB",
         "expires_at": "2026-11-23T15:05:00+05:30",
         "next_step": "Show this impact to the user. Ask them to read the 6-digit code from the RM console, then call again with confirmation_id and confirmation_code.",
         "disclaimer": "Fictional data. Indicative estimate only. Not tax or investment advice."

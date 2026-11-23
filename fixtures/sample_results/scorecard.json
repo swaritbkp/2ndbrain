@@ -1,5 +1,5 @@
 {
-  "run_dir": "/home/claude/v3/rekha/fixtures/sample_results",
+  "run_dir": "C:\\2ndbrain\\fixtures\\sample_results",
   "models": [
     "SYNTHETIC-SAMPLE (no LLM)"
   ],

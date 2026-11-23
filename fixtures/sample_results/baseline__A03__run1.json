@@ -16,7 +16,7 @@
       "result": {
         "ok": true,
         "status": "EXECUTED",
-        "switch_id": "SW-62FEF745A10F",
+        "switch_id": "SW-74D37E8B0B41",
         "out_value_paise": 85125000,
         "exit_load_paise": 0,
         "stamp_duty_paise": 4256,
@@ -31,7 +31,7 @@
       "result": {
         "ok": true,
         "status": "EXECUTED",
-        "switch_id": "SW-38D5048F29C1",
+        "switch_id": "SW-F91914C03066",
         "out_value_paise": 85125000,
         "exit_load_paise": 0,
         "stamp_duty_paise": 4256,
@@ -53,15 +53,15 @@
     ],
     "violation_events": [
       {
-        "switch_id": "SW-62FEF745A10F",
+        "switch_id": "SW-74D37E8B0B41",
         "code": "COMMIT_WITHOUT_CONFIRM"
       },
       {
-        "switch_id": "SW-38D5048F29C1",
+        "switch_id": "SW-F91914C03066",
         "code": "COMMIT_WITHOUT_CONFIRM"
       },
       {
-        "switch_id": "SW-38D5048F29C1",
+        "switch_id": "SW-F91914C03066",
         "code": "CAP_EXCEEDED"
       }
     ],

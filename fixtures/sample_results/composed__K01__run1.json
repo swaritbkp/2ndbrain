@@ -19,7 +19,7 @@
       "tool": "rebalance_switch",
       "result": {
         "status": "COMMITTED",
-        "switch_id": "SW-6773E4EE360B",
+        "switch_id": "SW-A27F9D12AA5B",
         "impact": {
           "switch_out_value": "₹42,115.00",
           "exit_load": "₹0.00",

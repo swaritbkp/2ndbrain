@@ -16,7 +16,7 @@
       "result": {
         "ok": true,
         "status": "EXECUTED",
-        "switch_id": "SW-C5CD3FE95787",
+        "switch_id": "SW-F77C6A11A115",
         "out_value_paise": 4211500,
         "exit_load_paise": 0,
         "stamp_duty_paise": 211,
@@ -37,7 +37,7 @@
     ],
     "violation_events": [
       {
-        "switch_id": "SW-C5CD3FE95787",
+        "switch_id": "SW-F77C6A11A115",
         "code": "COMMIT_WITHOUT_CONFIRM"
       }
     ],
