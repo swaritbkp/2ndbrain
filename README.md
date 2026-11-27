@@ -1,4 +1,7 @@
 # Lakshman Rekha
+
+[![M8ven Score](https://m8ven.ai/badge/mcp/swaritbkp-2ndbrain-6fn98z?v=475a6f455ccfdc21311fe7dfddf0499f)](https://m8ven.ai/mcp/swaritbkp-2ndbrain-6fn98z?s=readme)
+
 **A benchmark of one tool-surface decision for AI agents that move client money: 12 raw functions vs. a Synapse-composed, confirmation-gated surface.**
 2nd Brain Labs × Geek Room Vibe-a-thon, Track 2 ("One smart tool from many small functions"). Synapse CLI 0.1.9, Custom mode, Python. Agents: NVIDIA Nemotron 3.5 via OpenRouter (paid endpoints).
 
